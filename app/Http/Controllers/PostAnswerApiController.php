@@ -8,35 +8,45 @@ use App\Http\Requests;
 
 class PostAnswerApiController extends Controller
 {
-    public functon index{
-    	return questions::all
-    }
 
-
-  	 public function post_answer(Request $request,$question_id)
+    public function __construct()
     {
-        $this->validate($request, [
-            'answer' => 'required|min:5',
-        ]);
-        $answer = new Answer;
-        $answer->answer = $request->answer;
-        $answer->responder_id = Auth::user()->id;
-        $answer->question_id = $question_id;
-        $answer->save();
-
-        $asker_id = Question::find($question_id)->asker_id;
-        $description = Auth::user()->first_name.' '.Auth::user()->last_name.' posted an answer to your question.';
-        $link = url('/answers/'.$question_id);
-        Notification::send_notification($asker_id,$description,$link);
-        return redirect(url('/answers/'.$question_id));
+        $this->middleware('auth', ['only' => []]);
     }
 
+  	 public function post_answer(Request $request)
+    {
 
-    // public function delete_answer($answer_id)
-    // {
-    //     $answer = Answer::find($answer_id)->find($answer_id);
-    //     if(Auth::user() && (Auth::user()->role > 0 || Auth::user()->id == $answer->responder_id))
-    //         $answer->delete();
-    //     return redirect(url('answers/'.$answer->question_id));
-    // }
+        $returnData = array();
+
+      
+        
+        $question = Question::find($question_id);
+        $answer = Answer::find($answer_id);
+        //checks if request came from a user
+        if (!$question or !$answer or !($request->is('user/*'))){
+            $returnData['status'] = false;
+            $returnData['message'] = 'User not registered!';
+        }else{
+        /*
+        retrieving information required to add a row in database for request object from application
+        */
+        $answer = $request->only(['answer']);
+        $question_id = $request->only(['question_id']);
+        $responser_id = $request->only(['responser_id']);
+
+        DB::table('answers')->insert([
+                'answer' => $answer,
+                'question_id' => $question_id,
+                'responser_id' => $responser_id
+                ]);
+        }
+        $request->flash(); //refreshes inputs to be available on user's next request
+        }
+        array_push($returnData, $answer);
+        array_push($returnData, $question_id);
+        array_push($returnData, $responser_id);
+
+        return response()->json($returnData);
+    }
 }
