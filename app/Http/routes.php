@@ -135,4 +135,10 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::post('login', 'API\AuthAPIController@login');
     Route::post('logout', 'API\AuthAPIController@logout');
 
+
+    /*
+     * View questions of a certain course
+     * */
+    Route::get('questions/{id}/{order}', 'API\CourseAPIController@view_questions');
+
 });
