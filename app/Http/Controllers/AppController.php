@@ -15,6 +15,7 @@ use App\Question;
 use App\Answer;
 use App\Notification;
 use App\Feedback;
+use App\Component;
 use Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -217,13 +218,6 @@ class AppController extends Controller
         return redirect(url('answers/'.$answer->question_id));
     }
 
-
-
-
-
-
-
-
     public function view_notifications()
     {
         $user = Auth::user();
@@ -273,6 +267,35 @@ class AppController extends Controller
         return Redirect::back();
     }
 
+    public function post_component(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'alpha|required|unique:components,title',
+            'picture' => 'image|max:1000',
+            'description' => 'alpha|required',
+            'phone_number' => 'numeric',
+            'price' => 'numeric|min:0|max:10'
+        ]);
+        $component = new Component;
+        $component->title = $request->title;
+        $component->description = $request->description;
+        $component->phone_number = $request->phone_number;
+        $component->price = $request->price;
+        $component->user_id = Auth::user()->id;
+        if ($request->file('picture')) {
+            \Cloudinary::config(array(
+                "cloud_name" => env("CLOUDINARY_NAME"),
+                "api_key" => env("CLOUDINARY_KEY"),
+                "api_secret" => env("CLOUDINARY_SECRET")
+            ));
+            // upload and set new picture
+            $file = $request->file('picture');
+            $image = Uploader::upload($file->getRealPath(), ["width" => 300, "height" => 300, "crop" => "limit"]);
+            $component->picture = $image["url"];
+        }
+        $component->save();
+        return redirect('/');
+    }
 
 }
 

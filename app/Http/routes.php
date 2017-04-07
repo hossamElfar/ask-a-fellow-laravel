@@ -39,6 +39,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/user/{id}', 'UserController@show');
     Route::get('/user/{id}/questions', 'UserController@show');
     Route::get('/user/{id}/answers', 'UserController@showProfileAnswers');
+    Route::post('/user/postComponent', 'AppController@post_component');
 
 
     Route::get('/admin', 'AdminController@index');
