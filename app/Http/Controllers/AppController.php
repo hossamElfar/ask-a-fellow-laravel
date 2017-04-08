@@ -33,7 +33,8 @@ class AppController extends Controller
             'view_notifications',
             'subscribe_to_courses',
             'subscription_page',
-            'post_question_all'
+            'post_question_all',
+            // 'post_component'
         ]]);
 
     }
@@ -270,17 +271,21 @@ class AppController extends Controller
     public function post_component(Request $request)
     {
         $this->validate($request, [
-            'title' => 'alpha|required|unique:components,title',
+            'title' => 'required|unique:components,title',
             'picture' => 'image|max:1000',
-            'description' => 'alpha|required',
+            'description' => 'required',
             'phone_number' => 'numeric',
             'price' => 'numeric|min:0|max:10'
         ]);
         $component = new Component;
         $component->title = $request->title;
         $component->description = $request->description;
+        if ($request->phone_number)
         $component->phone_number = $request->phone_number;
+        else
+        $component->phone_number = 0;
         $component->price = $request->price;
+        // $component->user_id = 1; // for testing
         $component->user_id = Auth::user()->id;
         if ($request->file('picture')) {
             \Cloudinary::config(array(
@@ -294,7 +299,7 @@ class AppController extends Controller
             $component->picture = $image["url"];
         }
         $component->save();
-        return redirect('/');
+        return redirect('/about');
     }
 
 }
