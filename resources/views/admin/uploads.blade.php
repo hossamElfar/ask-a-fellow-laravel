@@ -7,11 +7,15 @@
         <div class="row">
           <div class="col-xs-3">
            <h3> {{$note->title}} </h3>  <br>
-            {{$note->description}} <br>
+          <b>Description: </b>  {{$note->description}} <br>
+          <b>Uploaded by: </b>  {{$note->first_name}}  {{$note->last_name}} <br>
+          <b>Course: </b>{{$note->course_name}} {{$note->course_code}} <br>
+
+
 
           </div>
 
-          <div class="col-xs-3">
+          <div class="col-xs-3 button-group">
             <a href="/admin/approve_note/{{$note->id}}" class="upload btn btn-success" id="{{$note->id}}">Upload</a>
             <a href="/admin/delete_note/{{$note->id}}" class="delete btn btn-danger" id="{{$note->id}}">Delete</a>
             <a href="/admin/view_note/{{$note->id}}" class="delete btn btn-primary" id="{{$note->id}}">View</a>
@@ -21,7 +25,12 @@
 
     @endforeach
    </div>
-
+<style media="screen">
+  .padding-group: {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+</style>
 <!-- <script type="text/javascript">
   alert('yooo');
   $(document).ready(function() {

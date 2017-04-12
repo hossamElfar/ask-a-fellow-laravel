@@ -9,6 +9,7 @@ use App\Question;
 use App\QuestionReport;
 use App\Note;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
 use App\Major;
@@ -300,26 +301,37 @@ class AdminController extends Controller
 
     //function to get all node upload requests
     public function nodeUploadRequests() {
-        $notes = Note::where('request_upload', '=', '1')->get();
+        $notes = DB::table('notes')
+                ->join('users', 'notes.user_id', '=', 'users.id')
+                ->join('courses', 'notes.course_id', '=', 'courses.id')
+                ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code')
+                ->get();
 
         return view('admin.uploads', compact(['notes']));
     }
-    public function approveNoteUpload($id) {
-      $note = Note::find($id);
 
+    //approved the uplaod of a note by changing its request_upload status to 0
+    public function approveNoteUpload($id) {
+
+      $note = Note::find($id);
       $note->request_upload = 0;
       $note->save();
       return redirect('admin/note_upload_requests');
+
     }
+
+    //deletes note using its ID
     public function deleteNote($id) {
       Note::destroy($id);
       return redirect('admin/note_upload_requests');
 
     }
-    public function viewNote($id) {
-      $note Note::find($id);
 
-      $path = $note->path;
-      return response()->file($path);
-    }
+    //opens the note file inline in the browser
+    // public function viewNote($id) {
+    //   $note Note::find($id);
+    //
+    //   $path = $note->path;
+    //   return response()->file($path);
+    // }
 }
