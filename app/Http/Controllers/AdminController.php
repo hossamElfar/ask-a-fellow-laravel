@@ -7,6 +7,7 @@ use App\AnswerReport;
 use App\Feedback;
 use App\Question;
 use App\QuestionReport;
+use App\Note;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -297,5 +298,28 @@ class AdminController extends Controller
         return view('admin.statistics', compact(['questions', 'answers', 'users']));
     }
 
+    //function to get all node upload requests
+    public function nodeUploadRequests() {
+        $notes = Note::where('request_upload', '=', '1')->get();
 
+        return view('admin.uploads', compact(['notes']));
+    }
+    public function approveNoteUpload($id) {
+      $note = Note::find($id);
+
+      $note->request_upload = 0;
+      $note->save();
+      return redirect('admin/note_upload_requests');
+    }
+    public function deleteNote($id) {
+      Note::destroy($id);
+      return redirect('admin/note_upload_requests');
+
+    }
+    public function viewNote($id) {
+      $note Note::find($id);
+
+      $path = $note->path;
+      return response()->file($path);
+    }
 }

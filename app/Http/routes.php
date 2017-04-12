@@ -63,6 +63,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/mail/log', 'AdminController@showMailLog');
     Route::get('/admin/statistics','AdminController@statistics');
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
+    Route::get('admin/note_upload_requests', 'AdminController@nodeUploadRequests');
+    Route::get('admin/approve/{id}', 'AdminController@approveNoteUpload');
+    Route::get('admin/delete/{id}', 'AdminController@deleteNote');
+    Route::get('admin/view/{id}', 'AdminController@viewNote');
 
 
     Route::get('/browse', 'AppController@browse');
@@ -172,5 +176,3 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
     Route::get('/home','ApiController@home');
 
 });
-
-
