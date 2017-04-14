@@ -8,7 +8,7 @@ use App\Feedback;
 use App\Question;
 use App\QuestionReport;
 use Illuminate\Http\Request;
-
+use App\Note;
 use App\Http\Requests;
 use App\Major;
 use App\Course;
@@ -267,6 +267,7 @@ class AdminController extends Controller
 
     public function add_badge()
     {
+
         $users = User::orderBy('first_name', 'asc');
         return view('admin.badge', compact(['users']));
     }
@@ -296,6 +297,17 @@ class AdminController extends Controller
         $users = User::all()->count();
         return view('admin.statistics', compact(['questions', 'answers', 'users']));
     }
+
+
+    public function deleteNoteAdmin($id) {
+        $note = Note::find($id);
+        $course_id = $note->course_id;
+        $note->delete();
+
+        return redirect(url('browse/notes/'. $course_id)); //TODO : appropriate redirection
+
+
+}
 
 
 }

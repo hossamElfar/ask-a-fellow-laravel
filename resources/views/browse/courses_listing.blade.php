@@ -12,7 +12,7 @@
                 <td>{{$course->course_code}}</td>
                 <td>{{$course->course_name}}</td>
                 <td>{{count($course->questions()->get())}}</td>
-
+                <td><a href="{{url('browse/notes/'.$course->id)}}">View Notes</a></td>
         </tr>
     @endforeach
     <tr>

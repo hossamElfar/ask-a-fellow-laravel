@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/user/{id}/answers', 'UserController@showProfileAnswers');
 
 
+
     Route::get('/admin', 'AdminController@index');
     Route::get('/admin/add_badge', 'AdminController@add_badge');
     Route::post('/admin/add_badge/{id}', 'AdminController@save_badge');
@@ -63,6 +64,11 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/mail/log', 'AdminController@showMailLog');
     Route::get('/admin/statistics','AdminController@statistics');
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
+
+    //YOUSSEF
+    Route::get('/admin/delete_note/{id}','AdminController@deleteNoteAdmin');
+    Route::get('/browse/notes/{course_id}','AppController@list_notes');
+    //
 
 
     Route::get('/browse', 'AppController@browse');
@@ -172,5 +178,3 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
     Route::get('/home','ApiController@home');
 
 });
-
-

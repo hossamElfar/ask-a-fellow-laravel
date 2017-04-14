@@ -272,8 +272,16 @@ class AppController extends Controller
         Session::flash('feedback','Feedback submitted successfully');
         return Redirect::back();
     }
+    public function  list_notes($course_id)
+    { //TODO : Pagination , Front end View , Offsets ,
+      $course = Course::find($course_id);
+      if(!$course)
+          return 'Ooops! course not found';
 
+          $notes = $course->notes()->first();
+
+        return view('notes.notes',compact('notes'));
+
+    }
 
 }
-
-
