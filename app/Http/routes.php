@@ -97,6 +97,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
     //
+
+    Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -176,5 +178,3 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
     Route::get('/home','ApiController@home');
 
 });
-
-
