@@ -45,7 +45,7 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
-    'from' => ['address' => 'askafellow.techhub@gmail.com', 'name' => 'Ask a Fellow'],
+    'from' => ['address' => 'hossamaskafellow@gmail.com', 'name' => 'Ask a Fellow'],
     /*
     |--------------------------------------------------------------------------
     | E-Mail Encryption Protocol
