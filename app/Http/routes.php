@@ -62,6 +62,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/users', 'AdminController@listUsers');
     Route::get('/admin/mail/log', 'AdminController@showMailLog');
     Route::get('/admin/statistics','AdminController@statistics');
+    Route::get('/admin/event_requests','AdminController@eventRequests');
+    Route::get('/admin/request/{{ $request->id }}','AdminController@viewRequest');
+    Route::patch('/admin/accept/{{ $request->id }}','AdminController@acceptRequest');
+    Route::delete('/admin/reject/{{ $request->id }}','AdminController@rejectRequest');
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
 
 
@@ -94,6 +98,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/verify/{token}', 'AuthController@verify');
     Route::post('/user/post_component', 'AppController@post_component');
     //
+
+    Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -173,5 +179,3 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
     Route::get('/home','ApiController@home');
 
 });
-
-

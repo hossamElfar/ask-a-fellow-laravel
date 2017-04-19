@@ -15,8 +15,8 @@ Note that this guide assumes that you installed the following in your computer:-
 2. navigate to the project directory and type `composer install`
 
 ### confuguring .env file and project cashing
-1. then type `php artisan key:generate`
-2. type `cp .env.example .env`
+1. type `cp .env.example .env`
+2. then type `php artisan key:generate` 
 3. modify the keys of the `.env` as  sent to you in the email
 4. run the server `sudo php artisan serve`, most propaply you will get caching path problrm
 5. run `sudo su`
