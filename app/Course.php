@@ -19,8 +19,12 @@ class Course extends Model
 
     public function subscribed_users()
     {
-        return $this->belongsToMany('App\User','subscribe');
+        return $this->belongsToMany('App\User', 'subscribe');
     }
 
+    public function events()
+    {
+        return $this->hasMany('App\Event');
+    }
 
 }

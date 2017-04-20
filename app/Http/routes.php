@@ -97,6 +97,22 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
     //
+    /**
+     * Create a new calender for the user
+     */
+    Route::post('calender/create','CalenderController@store');
+    /**
+     * Show a calender for a specific user
+     */
+    Route::get('calender/{calender_id}','CalenderController@show');
+    /**
+     * View the current authenticated user calender
+     */
+    Route::get('calender','CalenderController@viewCalender');
+    /**
+     * Add an event to the user's calender
+     */
+    Route::get('calender/add/{event_id}','CalenderController@addEvent');
 });
 
 Route::group(['middleware' => 'web'], function () {
