@@ -46,4 +46,37 @@ class NotesController extends Controller
     return 'Not allowed to delete this note';
 
   }
+
+      public function upload_notes_form(Request $request,$courseID)
+    {
+        $user = Auth::user();
+        if (!$user)
+            return 'Ooops! Not authorized';
+        return view('notes.uploadNotes');
+    }
+
+    public function upload_notes(Request $request, $courseID)
+    {
+        $user = Auth::user();
+        $this->validate($request, [
+            'title' => 'alpha|required',
+            'description' => 'alpha|required',
+        ]);
+        $file = $request->file('file');
+        $destinationPath= storage_path('Notes');
+        $fileName = $file->getClientOriginalName();
+        $note = new Note;
+        $note->user_id = Auth::user()->id;
+        $note->course_id = $courseID;
+        $note->title = $request->title;
+        $note->path = $destinationPath."/".$fileName;
+        $note->description = $request->description;
+        $note->request_upload = true;
+        $note->comment_on_delete="";
+        $file->move($destinationPath,$fileName);
+
+        $note->save();
+        return redirect('/');
+    }
+
 }

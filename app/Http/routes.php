@@ -117,7 +117,9 @@ Route::group(['middleware' => ['web']], function () {
 
 
     Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
-
+    Route::get('/course/{courseID}/uploadNote', 'NotesController@upload_notes_form');
+    Route::post('/course/{courseID}/uploadNote', 'NotesController@upload_notes');
+    
 });
 
 Route::group(['middleware' => 'web'], function () {
