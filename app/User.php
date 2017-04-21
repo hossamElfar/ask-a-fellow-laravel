@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name' ,'email', 'password', 'major', 'semester', 'bio','confirmation_code'
+        'first_name', 'last_name', 'email', 'password', 'major', 'semester', 'bio', 'confirmation_code'
     ];
 
     /**
@@ -40,8 +40,9 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function questions(){
-        return $this->hasMany('App\Question','asker_id');
+    public function questions()
+    {
+        return $this->hasMany('App\Question', 'asker_id');
     }
 
 
@@ -50,8 +51,9 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function lastFiveQuestions(){
-        return $this->questions()->orderBy('id','desc')->take(5)->get();
+    public function lastFiveQuestions()
+    {
+        return $this->questions()->orderBy('id', 'desc')->take(5)->get();
     }
 
     /**
@@ -59,8 +61,9 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function answers(){
-        return $this->hasMany('App\Answer','responder_id');
+    public function answers()
+    {
+        return $this->hasMany('App\Answer', 'responder_id');
     }
 
     /**
@@ -69,9 +72,10 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
-     public function lastFiveAnswers(){
-       return $this->answers()->orderBy('id','desc')->take(5)->get();
-     }
+    public function lastFiveAnswers()
+    {
+        return $this->answers()->orderBy('id', 'desc')->take(5)->get();
+    }
 
 
     /**
@@ -79,7 +83,8 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function notifications(){
+    public function notifications()
+    {
         return $this->hasMany('App\Notification');
     }
 
@@ -89,9 +94,8 @@ class User extends Authenticatable
      */
     public function new_notifications()
     {
-        return $this->notifications()->where('seen','=',0);
+        return $this->notifications()->where('seen', '=', 0);
     }
-
 
 
     /**
@@ -104,15 +108,15 @@ class User extends Authenticatable
         return $this->hasMany('App\AnswerVote');
     }
 
-    public function upvotesOnAnswer($id){
-        return $this->hasMany('App\AnswerVote')->where('type','=',0)->where('answer_id','=',$id)->get();
+    public function upvotesOnAnswer($id)
+    {
+        return $this->hasMany('App\AnswerVote')->where('type', '=', 0)->where('answer_id', '=', $id)->get();
     }
 
-    public function downvotesOnAnswer($id){
-        return $this->hasMany('App\AnswerVote')->where('type','=',1)->where('answer_id','=',$id)->get();
+    public function downvotesOnAnswer($id)
+    {
+        return $this->hasMany('App\AnswerVote')->where('type', '=', 1)->where('answer_id', '=', $id)->get();
     }
-
-
 
 
     /**
@@ -125,12 +129,14 @@ class User extends Authenticatable
         return $this->hasMany('App\QuestionVote');
     }
 
-    public function upvotesOnQuestion($id){
-        return $this->hasMany('App\QuestionVote')->where('type','=',0)->where('question_id','=',$id)->get();
+    public function upvotesOnQuestion($id)
+    {
+        return $this->hasMany('App\QuestionVote')->where('type', '=', 0)->where('question_id', '=', $id)->get();
     }
 
-    public function downvotesOnQuestion($id){
-        return $this->hasMany('App\QuestionVote')->where('type','=',1)->where('question_id','=',$id)->get();
+    public function downvotesOnQuestion($id)
+    {
+        return $this->hasMany('App\QuestionVote')->where('type', '=', 1)->where('question_id', '=', $id)->get();
     }
 
 
@@ -141,7 +147,7 @@ class User extends Authenticatable
      */
     public function subscribed_courses()
     {
-        return $this->belongsToMany('App\Course','subscribe');
+        return $this->belongsToMany('App\Course', 'subscribe');
     }
 
 
@@ -173,8 +179,7 @@ class User extends Authenticatable
     {
         $major = Major::find($major_id);
         $courses = $major->courses();
-        foreach($courses as $course)
-        {
+        foreach ($courses as $course) {
             $this->subscribe_to_course($course->id);
         }
     }
@@ -188,15 +193,12 @@ class User extends Authenticatable
     {
         $courses = $this->subscribed_courses()->get(['courses.id']);
         $courses_ids = array();
-        foreach($courses as $course)
-        {
+        foreach ($courses as $course) {
             $courses_ids[] = $course->id;
         }
-        $questions = Question::whereIn('course_id',$courses_ids);
+        $questions = Question::whereIn('course_id', $courses_ids);
         return $questions;
     }
-
-
 
 
     /**
@@ -205,7 +207,7 @@ class User extends Authenticatable
      * @param $type
      */
 
-    public function vote_on_question($question_id,$type)
+    public function vote_on_question($question_id, $type)
     {
         $questionVote = new QuestionVote();
         $questionVote->user_id = $this->id;
@@ -220,7 +222,7 @@ class User extends Authenticatable
      * @param $answer_id
      * @param $type
      */
-    public function vote_on_answer($answer_id,$type)
+    public function vote_on_answer($answer_id, $type)
     {
         $answerVote = new AnswerVote();
         $answerVote->user_id = $this->id;
@@ -255,9 +257,8 @@ class User extends Authenticatable
      */
     public function received_mails()
     {
-        return $this->belongsToMany('App\AdminMail','mail_recipients','user_id','mail_id');
+        return $this->belongsToMany('App\AdminMail', 'mail_recipients', 'user_id', 'mail_id');
     }
-
 
 
     /*
@@ -273,7 +274,7 @@ class User extends Authenticatable
 
     public function create_major($major_name, $faculty_name)
     {
-        if($this->role != 1)
+        if ($this->role != 1)
             return;
         $major = new Major();
         $major->major = $major_name;
@@ -282,11 +283,10 @@ class User extends Authenticatable
     }
 
 
-
     public function create_course($course_code1, $course_name, $course_code)
 
     {
-        if($this->role != 1)
+        if ($this->role != 1)
             return;
         $course = new Course();
         $course->course_name = $course_name;
@@ -298,7 +298,7 @@ class User extends Authenticatable
 
     public function delete_major($major_id)
     {
-        if($this->role != 1)
+        if ($this->role != 1)
             return;
         $major = Major::find($major_id);
         $major->delete();
@@ -306,7 +306,7 @@ class User extends Authenticatable
 
     public function delete_course($course_id)
     {
-        if($this->role != 1)
+        if ($this->role != 1)
             return;
         $course = Course::find($course_id);
         $course->delete();
@@ -315,7 +315,7 @@ class User extends Authenticatable
 
     public function delete_question($question_id)
     {
-        if($this->role != 1)
+        if ($this->role != 1)
             return;
         $question = Question::find($question_id);
         $question->delete();
@@ -323,7 +323,7 @@ class User extends Authenticatable
 
     public function delete_answer($answer_id)
     {
-        if($this->role != 1)
+        if ($this->role != 1)
             return;
         $answer = Answer::find($answer_id);
         $answer->delete();
@@ -336,7 +336,17 @@ class User extends Authenticatable
      */
     public function sent_mails()
     {
-        return $this->hasMany('App\AdminMail','user_id');
+        return $this->hasMany('App\AdminMail', 'user_id');
+    }
+
+    /**
+     * Calender relation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function calender()
+    {
+        return $this->hasMany('App\Calender')[0];
     }
 
 }
