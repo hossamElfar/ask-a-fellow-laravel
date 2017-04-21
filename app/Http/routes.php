@@ -92,7 +92,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_question', 'AjaxController@send_report_question');
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
-    //
+    
+
+    // components Routes
+    Route::get('/components/question/{id}', 'ComponentController@fetch_info');
 });
 
 Route::group(['middleware' => 'web'], function () {
