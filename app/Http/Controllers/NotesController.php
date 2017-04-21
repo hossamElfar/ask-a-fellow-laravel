@@ -57,21 +57,25 @@ class NotesController extends Controller
 
     public function upload_notes(Request $request, $courseID)
     {
+        $user = Auth::user();
         $this->validate($request, [
             'title' => 'alpha|required',
-            'path' => 'alpha|required',
             'description' => 'alpha|required',
         ]);
-        $user = Auth::user();
+        $file = $request->file('file');
+        $destinationPath= storage_path('Notes');
+        $fileName = $file->getClientOriginalName();
         $note = new Note;
         $note->user_id = Auth::user()->id;
         $note->course_id = $courseID;
         $note->title = $request->title;
-        $note->path = $request->path;
+        $note->path = $destinationPath."/".$fileName;
         $note->description = $request->description;
         $note->request_upload = true;
+        $note->comment_on_delete="";
+        $file->move($destinationPath,$fileName);
 
-        $question->save();
+        $note->save();
         return redirect('/');
     }
 
