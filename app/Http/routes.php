@@ -62,10 +62,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/users', 'AdminController@listUsers');
     Route::get('/admin/mail/log', 'AdminController@showMailLog');
     Route::get('/admin/statistics','AdminController@statistics');
-    Route::get('/admin/event_requests','AdminController@eventRequests');
-    Route::get('/admin/request/{{ $request->id }}','AdminController@viewRequest');
-    Route::patch('/admin/accept/{{ $request->id }}','AdminController@acceptRequest');
-    Route::delete('/admin/reject/{{ $request->id }}','AdminController@rejectRequest');
+    Route::get('/admin/event_requests','AdminController@eventRequests'); //viewing event request
+    Route::get('/admin/request/{id}','AdminController@viewRequest'); //viewing event information
+    Route::get('/admin/accept/{id}','AdminController@acceptRequest'); //accepting an event
+    Route::delete('/admin/reject/{id}','AdminController@rejectRequest'); //rejecting an event
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
 
 
