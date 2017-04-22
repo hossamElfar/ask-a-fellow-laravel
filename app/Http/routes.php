@@ -97,6 +97,29 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
     //
+
+    /**
+     * Create a new calender for the user
+     */
+    Route::post('calender/create','CalenderController@store');
+    /**
+     * Show a calender for a specific user
+     */
+    Route::get('calender/{calender_id}','CalenderController@show');
+    /**
+     * View the current authenticated user calender
+     */
+    Route::get('calender','CalenderController@viewCalender');
+    /**
+     * Add an event to the user's calender
+     */
+    Route::get('calender/add/{event_id}','CalenderController@addEvent');
+
+
+    Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
+    Route::get('/course/{courseID}/uploadNote', 'NotesController@upload_notes_form');
+    Route::post('/course/{courseID}/uploadNote', 'NotesController@upload_notes');
+    
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -176,5 +199,3 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
     Route::get('/home','ApiController@home');
 
 });
-
-
