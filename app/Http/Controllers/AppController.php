@@ -274,13 +274,14 @@ class AppController extends Controller
     }
     public function  list_notes($course_id)
     { //TODO : Pagination , Front end View , Offsets ,
+        if(Auth::user())
+        $role = Auth::user()->role;
       $course = Course::find($course_id);
       if(!$course)
           return 'Ooops! course not found';
 
-          $notes = $course->notes()->first();
-
-        return view('notes.notes',compact('notes'));
+          $notes = $course->notes;
+        return view('notes.notes',compact('notes','role'));
 
     }
 

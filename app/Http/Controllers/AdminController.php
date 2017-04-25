@@ -17,6 +17,7 @@ use App\AdminMail;
 use Mail;
 use Session;
 use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -300,14 +301,18 @@ class AdminController extends Controller
 
 
     public function deleteNoteAdmin($id) {
-        $note = Note::find($id);
-        $course_id = $note->course_id;
-        $note->delete();
+        if(Auth::user()){
+        $role  = Auth::user()->role;
+      if($role==1){
+          $note = Note::find($id);
+          $course_id = $note->course_id;
+          $note->delete();
+          return Redirect::back();
+      }else{
+            return Redirect::back();
+      }
 
-        return redirect(url('browse/notes/'. $course_id)); //TODO : appropriate redirection
-
-
-}
+        }}
 
 
 }
