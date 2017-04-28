@@ -65,11 +65,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/statistics','AdminController@statistics');
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
 
-    //YOUSSEF
-    Route::get('/admin/delete_note/{id}','AdminController@deleteNoteAdmin');
-    Route::get('/browse/notes/{course_id}','AppController@list_notes');
-    Route::get('/browse/notes/view_note/{note_id}','AppController@view_note');
-    //
 
 
     Route::get('/browse', 'AppController@browse');
@@ -99,6 +94,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_question', 'AjaxController@send_report_question');
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
+    
+    Route::get('/admin/delete_note/{id}','AdminController@deleteNoteAdmin');
+    Route::get('/browse/notes/{course_id}','AppController@list_notes');
+    Route::get('/browse/notes/view_note/{note_id}','AppController@view_note');
     //
 });
 
