@@ -7,16 +7,15 @@
             <div class="panel panel-default">
 
               <div class="panel-heading">
-              <h1>{{ $event->title</h1>
+              <h1>Event: {{ $event->title }}</h1>
               <br>
-              <h2><i>{{ $event->description }}</h2></i>
+              <h3><i>Description: {{ $event->description }}</h3></i>
               <br>
-              <h2><i>{{ $event->place }}</h2></i>
+              <h3><i>Place: {{ $event->place }}</h3></i>
               <br>
-              <h2><i>{{ $event->date }}</h2></i>
+              <h3><i>Date: {{ $event->date }}</h3></i>
               <br>
-              <h2>Created by</h2>
-              <h3><i>{{ $creator->first_name }} {{ $creator->last_name }}</h3></i>
+              <h2>Created by: {{ $creator->first_name }} {{ $creator->last_name }}</h2>
               <br>
               <h3><i>Email: {{ $creator->email }}</h3></i>
               <br>
@@ -28,21 +27,21 @@
               <div class="panel-body">
                
                 <a href="/admin/accept/{{ $event->id }}" id="accept">Accept Request</a>
-
-				        <br>
+                  
+				        <br></br>
 
 				        <a href="/admin/request/{{ $event->id }}" id="reject">Reject Request</a>
                 
                   <div id="deleteReq" style="display: none;">
-                	<form method="POST" action="/admin/reject/{{ $event->id }}">
-                		{{ method_field('DELETE') }}
-				    	<div class="form-group">
-				    		<h3><b>Are you sure want to delete this review?</b></h3>
-				    		<span class="glyphicon glyphicon-trash"></span>
-						  	<button type="submit" class="btn">Delete Request</button>
-						</div>
-					</form>
-				  </div>
+                    <form method="POST" action="/admin/reject/{{ $event->id }}">
+                        		{{ method_field('DELETE') }}
+        				    	<div class="form-group">
+        				    		<h3><b>Are you sure want to delete this review?</b></h3>
+        				    		<span class="glyphicon glyphicon-trash"></span>
+        						  	<button type="submit" class="btn">Delete Request</button>
+        						  </div>
+        					  </form>
+        				  </div>
                
               </div>
                 

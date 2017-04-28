@@ -7,8 +7,14 @@ use App\AnswerReport;
 use App\Feedback;
 use App\Question;
 use App\QuestionReport;
+use App\Note;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Filesystem\Filesystem;
+use Response;
+use File;
 use App\Http\Requests;
 use App\Major;
 use App\Course;
@@ -19,6 +25,7 @@ use App\Store;
 use Mail;
 use Session;
 use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -269,6 +276,7 @@ class AdminController extends Controller
 
     public function add_badge()
     {
+
         $users = User::orderBy('first_name', 'asc');
         return view('admin.badge', compact(['users']));
     }
@@ -298,20 +306,23 @@ class AdminController extends Controller
         $users = User::all()->count();
         return view('admin.statistics', compact(['questions', 'answers', 'users']));
     }
-
+    //function to view all event requests
     public function eventRequests()
     {
         $requests = Event::all()->where('verified',0);
         return view('admin.event_requests')->with('requests',$requests);
     }
 
+    //to view information about the clicked event and its creator with the option to accept or delete it
     public function viewRequest($id)
     {
         $event = Event::find($id);
         $creator = User::find($event->creator_id);
+        //return $event;
         return view('admin.event', compact(['event', 'creator']));
     }
 
+    //function to reject event requests by searching and removing it from the database
     public function rejectRequest($id)
     {
         $event = Event::find($id);
@@ -319,6 +330,7 @@ class AdminController extends Controller
         return redirect('admin/event_requests');
     }
 
+    //function to accept event requests by searching and setting its verified flag to true
     public function acceptRequest($id)
     {
         $event =  Event::Find($id);
@@ -370,5 +382,63 @@ class AdminController extends Controller
         $store->address = $request->store_address;
         $store->save();
         return redirect('admin/add_store');
+    }
+
+    //function to get all node upload requests
+    public function noteRequests() {
+          $notes_upload = DB::table('notes')->where('notes.request_upload', '=', 1)
+                  ->join('users', 'notes.user_id', '=', 'users.id')
+                  ->join('courses', 'notes.course_id', '=', 'courses.id')
+                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code')
+                  ->get();
+         $notes_delete = DB::table('notes')->where('notes.request_delete', '=', 1)
+                  ->join('users', 'notes.user_id', '=', 'users.id')
+                  ->join('courses', 'notes.course_id', '=', 'courses.id')
+                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code')
+                  ->get();
+
+          return view('admin.upload_delete_requests', compact(['notes_upload', 'notes_delete']));
+    }
+
+    //approved the uplaod of a note by changing its request_upload status to 0
+    public function approveNoteUpload($id) {
+        $note = Note::find($id);
+        $note->request_upload = 0;
+        $note->save();
+        return redirect('admin/note_requests');
+    }
+
+    //deletes note using its ID
+    public function deleteNote($id) {
+          $note = Note::find($id);
+          File::delete($note->path);
+          Note::destroy($id);
+
+        return redirect('admin/note_requests');
+    }
+
+    //opens the note file inline in the browser
+    public function viewNote($id) {
+       $note =  Note::find($id);
+
+        return Response::make(file_get_contents($note->path), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$note->title.'"'
+        ]);
+    }
+
+    //Function to Delete the note as an admin
+    public function deleteNoteAdmin($id) {
+        if(Auth::user()){
+            $role  = Auth::user()->role;
+            if($role==1){
+              $note = Note::find($id);
+              $course_id = $note->course_id;
+              $note->delete();
+              return Redirect::back();
+          } else {
+                return Redirect::back();
+          }
+        }
     }
 }

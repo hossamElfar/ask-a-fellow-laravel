@@ -9,6 +9,7 @@ use App\Http\Requests;
 class StaticController extends Controller
 {
     public function about() {
+
         return view('statics.about');
     }
 
