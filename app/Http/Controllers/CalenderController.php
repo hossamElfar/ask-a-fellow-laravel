@@ -77,6 +77,15 @@ class CalenderController extends Controller
         $calender->events()->attach($event);
         return "Done";
     }
+    public function removeEvent($event_id)
+    {
+        
+        $user = Auth::user();
+        $calender = $user->calender()->get();
+        $event = Event::findOrFail($event_id);
+        $calender->events()->detach($event);
+        return "Successfully Removed From Your Calendar";
+    }
 
     public function showUserCalender($id)
     {
