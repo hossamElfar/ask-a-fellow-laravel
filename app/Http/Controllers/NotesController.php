@@ -78,18 +78,10 @@ class NotesController extends Controller
             $vote = NoteVote::where('user_id', '=', Auth::user()->id)->where('note_id', '=', $note_id)->first();
             $vote->delete();
         } else if ($type == 1 && count($user->upvotesOnNote($note_id))) {
-            $vote = QuestionVote::where('user_id', '=', Auth::user()->id)->where('note_id', '=', $note_id)->first();
+            $vote = NoteVote::where('user_id', '=', Auth::user()->id)->where('note_id', '=', $note_id)->first();
             $vote->delete();
         } else
             $user->vote_on_note($note_id, $type);
-
-        // $votes = Note::find($note_id)->votes;
-        // $color = 'black';
-        // if ($votes > 0)
-        //     $color = 'green';
-        // elseif ($votes < 0)
-        //     $color = 'red';
-        // return ['state' => '200 ok', 'error' => false];
     }
 
 }

@@ -340,7 +340,7 @@ class User extends Authenticatable
     }
 
 
-        /**
+    /**
      * Votes on notes done by this user
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
