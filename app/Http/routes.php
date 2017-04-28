@@ -65,7 +65,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
 
     /** Routes for admin approving/rejectin note upload and deletion **/
-    Route::get('admin/note_requests', 'AdminController@nodeUploadRequests');
+    Route::get('admin/note_requests', 'AdminController@noteRequests');
     Route::get('admin/approve_note/{id}', 'AdminController@approveNoteUpload');
     Route::get('admin/delete_note/{id}', 'AdminController@deleteNote');
     Route::get('admin/view_note/{id}', 'AdminController@viewNote');

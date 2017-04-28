@@ -304,7 +304,7 @@ class AdminController extends Controller
     }
 
     //function to get all node upload requests
-    public function nodeUploadRequests() {
+    public function noteRequests() {
           $notes_upload = DB::table('notes')->where('notes.request_upload', '=', 1)
                   ->join('users', 'notes.user_id', '=', 'users.id')
                   ->join('courses', 'notes.course_id', '=', 'courses.id')
