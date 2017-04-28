@@ -77,9 +77,15 @@ class CalenderController extends Controller
         $calender->events()->attach($event);
         return "Done";
     }
+
+    /**
+     * Remove an Event from user's calender
+     *
+     * @param $event_id
+     * @return string
+     */
     public function removeEvent($event_id)
     {
-        
         $user = Auth::user();
         $calender = $user->calender()->get();
         $event = Event::findOrFail($event_id);
@@ -87,6 +93,12 @@ class CalenderController extends Controller
         return "Successfully Removed From Your Calendar";
     }
 
+    /**
+     * Showing the calender of user from the profile page
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showUserCalender($id)
     {
         $user = User::find($id);
