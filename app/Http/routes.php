@@ -52,6 +52,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/add_store', 'AdminController@add_store');
     Route::get('/admin/delete_course/{id}', 'AdminController@delete_course');
     Route::get('/admin/delete_major/{id}', 'AdminController@delete_major');
+    Route::delete('/admin/delete_store/{id}', 'AdminController@delete_store');
     Route::get('/admin/update_course/{id}', 'AdminController@update_course_page');
     Route::get('/admin/update_major/{id}', 'AdminController@update_major_page');
     Route::post('/admin/update_course/{id}', 'AdminController@update_course');

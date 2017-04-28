@@ -327,7 +327,8 @@ class AdminController extends Controller
         return redirect('admin/event_requests');
     }
 
-    public function add_store(Request $request){
+    public function add_store(Request $request)
+    {
         $this->validate($request, [
             'name' => 'required',
             'address' => 'required',
@@ -337,4 +338,9 @@ class AdminController extends Controller
         $store->address = $request->address;
     }
 
+    public function delete_store($id)
+    {
+        $store = Store::find($id);
+        $store->delete();
+    }
 }
