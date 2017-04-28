@@ -7,8 +7,14 @@ use App\AnswerReport;
 use App\Feedback;
 use App\Question;
 use App\QuestionReport;
-use Illuminate\Http\Request;
 use App\Note;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Filesystem\Filesystem; 
+use Response; 
+use File; 
 use App\Http\Requests;
 use App\Major;
 use App\Course;
@@ -299,7 +305,6 @@ class AdminController extends Controller
         $users = User::all()->count();
         return view('admin.statistics', compact(['questions', 'answers', 'users']));
     }
-
     //function to view all event requests
     public function eventRequests()
     {
@@ -334,6 +339,51 @@ class AdminController extends Controller
     }
 
 
+    //function to get all node upload requests
+    public function noteRequests() {
+          $notes_upload = DB::table('notes')->where('notes.request_upload', '=', 1)
+                  ->join('users', 'notes.user_id', '=', 'users.id')
+                  ->join('courses', 'notes.course_id', '=', 'courses.id')
+                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code') 
+                  ->get();
+         $notes_delete = DB::table('notes')->where('notes.request_delete', '=', 1)
+                  ->join('users', 'notes.user_id', '=', 'users.id')
+                  ->join('courses', 'notes.course_id', '=', 'courses.id')
+                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code') 
+                  ->get();
+
+          return view('admin.upload_delete_requests', compact(['notes_upload', 'notes_delete']));
+    }
+
+    //approved the uplaod of a note by changing its request_upload status to 0
+    public function approveNoteUpload($id) {
+        $note = Note::find($id);
+        $note->request_upload = 0;
+        $note->save();
+        return redirect('admin/note_requests');
+    }
+
+    //deletes note using its ID
+    public function deleteNote($id) {
+          $note = Note::find($id);
+          File::delete($note->path);
+          Note::destroy($id); 
+
+        return redirect('admin/note_requests');
+    }
+
+    //opens the note file inline in the browser
+    public function viewNote($id) {
+       $note =  Note::find($id);  
+
+    return Response::make(file_get_contents($note->path), 200, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="'.$note->title.'"'
+    ]);
+        
+    }
+
+    //Function to Delete the note as an admin
     public function deleteNoteAdmin($id) {
         if(Auth::user()){
         $role  = Auth::user()->role;
@@ -348,5 +398,5 @@ class AdminController extends Controller
 
         }}
 
-
+  
 }
