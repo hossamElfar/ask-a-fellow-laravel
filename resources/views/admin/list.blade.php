@@ -23,6 +23,12 @@
 
             <tr>
                 <td>
+                    <a href="{{url('admin/add_store')}}">Add Store</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
                     <a href="{{url('admin/feedbacks')}}">View Feedbacks</a>
                 </td>
             </tr>

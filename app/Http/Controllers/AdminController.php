@@ -15,7 +15,7 @@ use App\Course;
 use App\User;
 use App\Event;
 use App\AdminMail;
-use Store\Store;
+use App\Store;
 use Mail;
 use Session;
 use Auth;
@@ -327,31 +327,48 @@ class AdminController extends Controller
         return redirect('admin/event_requests');
     }
 
+    public function add_store_page()
+    {
+        $stores = Store::all();
+        return view('admin.add_store')->with('stores', $stores);
+    }
+
     public function add_store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'address' => 'required',
+            'store_name' => 'required',
+            'store_address' => 'required',
         ]);
         $store = new Store();
-        $store->name = $request->name;
-        $store->address = $request->address;
+        $store->name = $request->store_name;
+        $store->address = $request->store_address;
+        $store->save();
+        return redirect('admin/add_store');
     }
 
     public function delete_store($id)
     {
         $store = Store::find($id);
         $store->delete();
+        return redirect('admin/add_store');
+    }
+
+    public function update_store_page($id)
+    {
+        $store = Store::find($id);
+        return view('admin.update_store')->with('store', $store);
     }
 
     public function update_store($id, Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'address' => 'required',
+            'store_name' => 'required',
+            'store_address' => 'required',
         ]);
         $store = Store::find($id);
-        $store->name = $request->name;
-        $store->address = $request->address;
+        $store->name = $request->store_name;
+        $store->address = $request->store_address;
+        $store->save();
+        return redirect('admin/add_store');
     }
 }
