@@ -12,4 +12,9 @@ class Announcement extends Model
     {
         return $this->belongsTo('App\Event')[0];
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

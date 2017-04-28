@@ -20,6 +20,6 @@ class Calender extends Model
 
     public function events()
     {
-        return $this->hasMany('App\Event','calenders_events');
+        return $this->belongsToMany('App\Event','calenders_events');
     }
 }

@@ -114,6 +114,18 @@ Route::group(['middleware' => ['web']], function () {
      * Add an event to the user's calender
      */
     Route::get('calender/add/{event_id}','CalenderController@addEvent');
+    /**
+     * Show all events
+     */
+    Route::get('events','EventController@index');
+    /**
+     * Show a specific event
+     */
+    Route::get('events/{id}','EventController@show');
+    /**
+     * Show the calender of a specific user
+     */
+    Route::get('user/{user_id}/calender','CalenderController@showUserCalender');
 
 
     Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
