@@ -67,12 +67,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudinary/cloudinary_php.git",
-                "reference": "d0d33004aeb67224fa1c19339efd9118bf3c594e"
+                "reference": "330b6b3f6fcb093a4f2345d5974a849e5f12e569"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudinary/cloudinary_php/zipball/d0d33004aeb67224fa1c19339efd9118bf3c594e",
-                "reference": "d0d33004aeb67224fa1c19339efd9118bf3c594e",
+                "url": "https://api.github.com/repos/cloudinary/cloudinary_php/zipball/330b6b3f6fcb093a4f2345d5974a849e5f12e569",
+                "reference": "330b6b3f6fcb093a4f2345d5974a849e5f12e569",
                 "shasum": ""
             },
             "require": {
@@ -111,7 +111,7 @@
                 "image management",
                 "sdk"
             ],
-            "time": "2017-03-13 00:34:36"
+            "time": "2017-04-03 08:28:38"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -490,16 +490,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.36",
+            "version": "1.0.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "d9c1698582dfbfbd092ec9c5c3325f862cdb3297"
+                "reference": "78b5cc4feb61a882302df4fbaf63b7662e5e4ccd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d9c1698582dfbfbd092ec9c5c3325f862cdb3297",
-                "reference": "d9c1698582dfbfbd092ec9c5c3325f862cdb3297",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/78b5cc4feb61a882302df4fbaf63b7662e5e4ccd",
+                "reference": "78b5cc4feb61a882302df4fbaf63b7662e5e4ccd",
                 "shasum": ""
             },
             "require": {
@@ -569,7 +569,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-03-18 16:02:30"
+            "time": "2017-03-22 15:43:14"
         },
         {
             "name": "monolog/monolog",
@@ -1285,16 +1285,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "b7a1b9e0a0f623ce43b4c8d775eb138f190c9d8d"
+                "reference": "154bb1ef7b0e42ccc792bd53edbce18ed73440ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/b7a1b9e0a0f623ce43b4c8d775eb138f190c9d8d",
-                "reference": "b7a1b9e0a0f623ce43b4c8d775eb138f190c9d8d",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/154bb1ef7b0e42ccc792bd53edbce18ed73440ca",
+                "reference": "154bb1ef7b0e42ccc792bd53edbce18ed73440ca",
                 "shasum": ""
             },
             "require": {
@@ -1341,7 +1341,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-21 09:12:04"
+            "time": "2017-04-04 07:26:27"
         },
         {
             "name": "symfony/finder",
@@ -1947,16 +1947,16 @@
         },
         {
             "name": "tymon/jwt-auth",
-            "version": "0.5.10",
+            "version": "0.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tymondesigns/jwt-auth.git",
-                "reference": "754448bbedccb1ce5fba16914482c6a6e0871e1d"
+                "reference": "807de0561c40c9a924783d2e30036b635cebf03c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tymondesigns/jwt-auth/zipball/754448bbedccb1ce5fba16914482c6a6e0871e1d",
-                "reference": "754448bbedccb1ce5fba16914482c6a6e0871e1d",
+                "url": "https://api.github.com/repos/tymondesigns/jwt-auth/zipball/807de0561c40c9a924783d2e30036b635cebf03c",
+                "reference": "807de0561c40c9a924783d2e30036b635cebf03c",
                 "shasum": ""
             },
             "require": {
@@ -2006,7 +2006,7 @@
                 "laravel",
                 "tymon"
             ],
-            "time": "2017-01-24 22:20:55"
+            "time": "2017-04-06 19:57:45"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -2212,12 +2212,12 @@
             "version": "0.9.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/padraic/mockery.git",
+                "url": "https://github.com/mockery/mockery.git",
                 "reference": "6fdb61243844dc924071d3404bb23994ea0b6856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/6fdb61243844dc924071d3404bb23994ea0b6856",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/6fdb61243844dc924071d3404bb23994ea0b6856",
                 "reference": "6fdb61243844dc924071d3404bb23994ea0b6856",
                 "shasum": ""
             },
@@ -3340,16 +3340,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "093e416ad096355149e265ea2e4cc1f9ee40ab1a"
+                "reference": "62b4cdb99d52cb1ff253c465eb1532a80cebb621"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/093e416ad096355149e265ea2e4cc1f9ee40ab1a",
-                "reference": "093e416ad096355149e265ea2e4cc1f9ee40ab1a",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/62b4cdb99d52cb1ff253c465eb1532a80cebb621",
+                "reference": "62b4cdb99d52cb1ff253c465eb1532a80cebb621",
                 "shasum": ""
             },
             "require": {
@@ -3391,7 +3391,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-07 16:47:02"
+            "time": "2017-03-20 09:45:15"
         },
         {
             "name": "webmozart/assert",

@@ -13,6 +13,7 @@ use App\Http\Requests;
 use App\Major;
 use App\Course;
 use App\User;
+use App\Event;
 use App\AdminMail;
 use Mail;
 use Session;
@@ -295,6 +296,39 @@ class AdminController extends Controller
         $answers = Answer::all()->count();
         $users = User::all()->count();
         return view('admin.statistics', compact(['questions', 'answers', 'users']));
+    }
+
+    //function to view all event requests
+    public function eventRequests()
+    {
+        $requests = Event::all()->where('verified',0);
+        return view('admin.event_requests')->with('requests',$requests);
+    }
+
+    //to view information about the clicked event and its creator with the option to accept or delete it
+    public function viewRequest($id)
+    {
+        $event = Event::find($id);
+        $creator = User::find($event->creator_id);
+        //return $event;
+        return view('admin.event', compact(['event', 'creator']));
+    }
+
+    //function to reject event requests by searching and removing it from the database
+    public function rejectRequest($id)
+    {
+        $event = Event::find($id);
+        $event-> delete();
+        return redirect('admin/event_requests');
+    }
+
+    //function to accept event requests by searching and setting its verified flag to true
+    public function acceptRequest($id)
+    {
+        $event =  Event::Find($id);
+        $event->verified= 1;
+        $event->save();
+        return redirect('admin/event_requests');
     }
 
 
