@@ -103,11 +103,11 @@ class CalenderController extends Controller
     {
         $user = User::find($id);
         $calender = $user->calender()->get()->first();
-        if($calender == null){
-            return view('user.calender',compact('calender','user'));
-        }else{
+        if ($calender == null) {
+            return view('user.calender', compact('calender', 'user'));
+        } else {
             $events = $calender->events()->orderBy('date')->get();
-            return view('user.calender',compact('events','calender','user'));
+            return view('user.calender', compact('events', 'calender', 'user'));
         }
 
     }

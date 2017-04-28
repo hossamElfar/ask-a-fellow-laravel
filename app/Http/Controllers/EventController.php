@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Event;
-use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
@@ -21,8 +20,8 @@ class EventController extends Controller
     }
 
     /**
-     * Show a specific event 
-     * 
+     * Show a specific event
+     *
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -30,6 +29,6 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         $announcements = $event->announcements()->orderBy('updated_at')->get();
-        return view('events.show',compact('event','announcements'));
+        return view('events.show', compact('event', 'announcements'));
     }
 }
