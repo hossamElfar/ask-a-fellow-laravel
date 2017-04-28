@@ -343,4 +343,15 @@ class AdminController extends Controller
         $store = Store::find($id);
         $store->delete();
     }
+
+    public function update_store($id, Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'address' => 'required',
+        ]);
+        $store = Store::find($id);
+        $store->name = $request->name;
+        $store->address = $request->address;
+    }
 }
