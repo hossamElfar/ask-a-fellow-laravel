@@ -8,7 +8,7 @@ use App\Feedback;
 use App\Question;
 use App\QuestionReport;
 use Illuminate\Http\Request;
-
+use App\Note;
 use App\Http\Requests;
 use App\Major;
 use App\Course;
@@ -18,6 +18,7 @@ use App\AdminMail;
 use Mail;
 use Session;
 use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -268,6 +269,7 @@ class AdminController extends Controller
 
     public function add_badge()
     {
+
         $users = User::orderBy('first_name', 'asc');
         return view('admin.badge', compact(['users']));
     }
@@ -330,6 +332,21 @@ class AdminController extends Controller
         $event->save();
         return redirect('admin/event_requests');
     }
+
+
+    public function deleteNoteAdmin($id) {
+        if(Auth::user()){
+        $role  = Auth::user()->role;
+      if($role==1){
+          $note = Note::find($id);
+          $course_id = $note->course_id;
+          $note->delete();
+          return Redirect::back();
+      }else{
+            return Redirect::back();
+      }
+
+        }}
 
 
 }
