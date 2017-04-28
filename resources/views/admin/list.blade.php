@@ -58,6 +58,11 @@
                     <a href="{{url('admin/statistics')}}">Site statistics</a>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <a href="{{url('admin/event_requests')}}">Event Requests</a>
+                </td>
+            </tr>
 
         </table>
     </div>

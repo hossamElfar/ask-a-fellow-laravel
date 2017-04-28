@@ -96,3 +96,16 @@ class UserController extends Controller
         Uploader::destroy($public_id);
     }
 }
+
+public function view_components()
+    {
+        $components = Component::all();
+        return view('user.components', compact(['components']));
+    }
+
+public function view_sellerInfo($id)
+    {
+        $componentSeller = Component::find($id);
+        
+        return view('user.component_seller', compact(['componentSeller']));
+    }    
