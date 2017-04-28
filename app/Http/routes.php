@@ -99,6 +99,7 @@ Route::group(['middleware' => ['web']], function () {
     //
 
     Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
+    Route::post('/note_comment/{note_id}', 'NotesController@post_note_comment');
 });
 
 Route::group(['middleware' => 'web'], function () {

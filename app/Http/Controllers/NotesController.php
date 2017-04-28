@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Note;
+use App\NoteComment;
 use Auth;
 use Log;
 
@@ -46,4 +47,17 @@ class NotesController extends Controller
     return 'Not allowed to delete this note';
 
   }
+
+    // post comment 
+    public function post_note_comment(Request $request, $note_id)
+    {
+        $comment = new NoteComment();
+        $comment->body = $request->comment;
+        $comment->user_id = Auth::user()->id;
+        $comment->note_id = $note_id;
+        $comment->save();
+    }
+
+
+
 }
