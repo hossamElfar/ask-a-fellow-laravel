@@ -21,6 +21,10 @@ class Course extends Model
     {
         return $this->belongsToMany('App\User', 'subscribe');
     }
+    public function notes()
+    {
+        return $this->hasMany('App\Note');
+    }
 
     public function events()
     {
