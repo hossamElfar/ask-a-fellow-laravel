@@ -15,6 +15,7 @@ use App\Course;
 use App\User;
 use App\Event;
 use App\AdminMail;
+use Store\Store;
 use Mail;
 use Session;
 use Auth;
@@ -326,5 +327,14 @@ class AdminController extends Controller
         return redirect('admin/event_requests');
     }
 
+    public function add_store(Request $request){
+        $this->validate($request, [
+            'name' => 'required',
+            'address' => 'required',
+        ]);
+        $store = new Store();
+        $store->name = $request->name;
+        $store->address = $request->address;
+    }
 
 }

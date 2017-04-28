@@ -49,6 +49,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/add_major', 'AdminController@add_major_page');
     Route::post('/admin/add_major', 'AdminController@add_major');
     Route::post('/admin/add_course', 'AdminController@add_course');
+    Route::post('/admin/add_store', 'AdminController@add_store');
     Route::get('/admin/delete_course/{id}', 'AdminController@delete_course');
     Route::get('/admin/delete_major/{id}', 'AdminController@delete_major');
     Route::get('/admin/update_course/{id}', 'AdminController@update_course_page');
@@ -101,11 +102,11 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
 });
 
-Route::group(['middleware' => 'web'], function () {
-    Route::auth();
-    Route::get('/register/verify/{token}', 'Auth\AuthController@verify');
-    Route::get('/home', 'HomeController@index');
-});
+// Route::group(['middleware' => 'web'], function () {
+//     Route::auth();
+//     Route::get('/register/verify/{token}', 'Auth\AuthController@verify');
+//     Route::get('/home', 'HomeController@index');
+// });
 
 /*
 |==========================================================================
