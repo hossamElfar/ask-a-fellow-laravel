@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/user/{id}/answers', 'UserController@showProfileAnswers');
 
 
+
     Route::get('/admin', 'AdminController@index');
     Route::get('/admin/add_badge', 'AdminController@add_badge');
     Route::post('/admin/add_badge/{id}', 'AdminController@save_badge');
@@ -75,6 +76,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('admin/view_note/{id}', 'AdminController@viewNote');
 
 
+
     Route::get('/browse', 'AppController@browse');
     Route::get('/list_courses/{major}/{semester}', 'AjaxController@getCourses');
     Route::get('/browse/{course_id}', 'AppController@list_questions');
@@ -102,6 +104,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_question', 'AjaxController@send_report_question');
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
+    
+    Route::get('/admin/delete_note/{id}','AdminController@deleteNoteAdmin');
+    Route::get('/browse/notes/{course_id}','AppController@list_notes');
+    Route::get('/browse/notes/view_note/{note_id}','AppController@view_note');
     //
 
     /**
