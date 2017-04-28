@@ -63,7 +63,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/mail/log', 'AdminController@showMailLog');
     Route::get('/admin/statistics','AdminController@statistics');
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
-    Route::get('admin/note_upload_requests', 'AdminController@nodeUploadRequests');
+
+    /** Routes for admin approving/rejectin note upload and deletion **/
+    Route::get('admin/note_requests', 'AdminController@nodeUploadRequests');
     Route::get('admin/approve_note/{id}', 'AdminController@approveNoteUpload');
     Route::get('admin/delete_note/{id}', 'AdminController@deleteNote');
     Route::get('admin/view_note/{id}', 'AdminController@viewNote');

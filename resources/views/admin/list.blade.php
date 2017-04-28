@@ -60,10 +60,9 @@
             </tr>
             <tr>
                 <td>
-                    <a href="{{url('admin/note_upload_requests')}}">Note Upload Requests</a>
+                    <a href="{{url('admin/note_requests')}}">Note Upload/Delete Requests</a>
                 </td>
             </tr>
-
         </table>
     </div>
 @endsection
