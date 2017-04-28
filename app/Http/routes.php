@@ -64,9 +64,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/statistics','AdminController@statistics');
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
     Route::get('admin/note_upload_requests', 'AdminController@nodeUploadRequests');
-    // Route::get('admin/approve/{id}', 'AdminController@approveNoteUpload');
-    // Route::get('admin/delete/{id}', 'AdminController@deleteNote');
-    // Route::get('admin/view/{id}', 'AdminController@viewNote');
+    Route::get('admin/approve_note/{id}', 'AdminController@approveNoteUpload');
+    Route::get('admin/delete_note/{id}', 'AdminController@deleteNote');
+    Route::get('admin/view_note/{id}', 'AdminController@viewNote');
 
 
     Route::get('/browse', 'AppController@browse');
