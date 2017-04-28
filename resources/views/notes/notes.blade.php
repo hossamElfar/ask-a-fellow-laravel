@@ -14,20 +14,22 @@
       <form action='/admin/delete_note/{{$note->id}}' Method="GET">
 
         <button style="float:right" class ="icon-button"><span class="glyphicon glyphicon-trash" style ="float:right"></span></button>
-</form>
+      </form>
   @endif
       <h2  > {{$note->title}}</h2>
       <hr />
       <p>{!! nl2br(e($note->description)) !!}</p>
+      <hr />
+      <form action='/browse/notes/view_note/{{$note->id}}' Method="GET">
+
+        <button style="float:right" class ="icon-button2">View Note</button>
+      </form>
     </a>
   </li>
   	@endforeach
 </ul>
 </div>
-<link  href="http://fonts.googleapis.com/css?
-family=Reenie+Beanie:regular"
-rel="stylesheet"
-type="text/css">
+
 <style>
 .icon-button {
     appearance: none;
@@ -37,12 +39,24 @@ type="text/css">
     border: 0;
     background: transparent;
 }
+.icon-button2{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    background: transparent;
+}
+.icon-button2:hover{
+  background-color: #40a0ff; /* Green */
+color: white;
+}
 #Header h1{
   position:absolute;
   left:40%;
   top:10%;
   margin:auto;
-  font-family:"Reenie Beanie",arial,sans-serif;
+
    text-decoration: underline;
 }
 #Note * {

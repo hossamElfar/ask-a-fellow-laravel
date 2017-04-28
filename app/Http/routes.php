@@ -68,6 +68,7 @@ Route::group(['middleware' => ['web']], function () {
     //YOUSSEF
     Route::get('/admin/delete_note/{id}','AdminController@deleteNoteAdmin');
     Route::get('/browse/notes/{course_id}','AppController@list_notes');
+    Route::get('/browse/notes/view_note/{note_id}','AppController@view_note');
     //
 
 
