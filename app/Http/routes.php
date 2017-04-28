@@ -96,10 +96,16 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_question', 'AjaxController@send_report_question');
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
-    //
 
     Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
+    /*
+     *  Post comment on a note
+     */
     Route::post('/note_comment/{note_id}', 'NotesController@post_note_comment');
+    /*
+     *  Vote a note
+     */
+    Route::get('/vote/note/{note_id}/{type}', 'NotesController@vote_note');
 });
 
 Route::group(['middleware' => 'web'], function () {

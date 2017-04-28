@@ -51,6 +51,10 @@ class NotesController extends Controller
     // post comment 
     public function post_note_comment(Request $request, $note_id)
     {
+        $user = Auth::user();
+        if (!$user) {
+            return ['state' => 'error', 'error' => true];
+        }
         $comment = new NoteComment();
         $comment->body = $request->comment;
         $comment->user_id = Auth::user()->id;
@@ -58,6 +62,34 @@ class NotesController extends Controller
         $comment->save();
     }
 
+    // vote note
+    public function vote_note($note_id, $type)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return ['state' => 'error', 'error' => true];
+        }
 
+        if ($type == 0 && count($user->upvotesOnNote($note_id)))
+            return ['state' => 'cannot up vote twice', 'error' => true];
+        if ($type == 1 && count($user->downvotesOnNote($note_id)))
+            return ['state' => 'cannot down vote twice', 'error' => true];
+        if ($type == 0 && count($user->downvotesOnNote($note_id))) {
+            $vote = NoteVote::where('user_id', '=', Auth::user()->id)->where('note_id', '=', $note_id)->first();
+            $vote->delete();
+        } else if ($type == 1 && count($user->upvotesOnNote($note_id))) {
+            $vote = QuestionVote::where('user_id', '=', Auth::user()->id)->where('note_id', '=', $note_id)->first();
+            $vote->delete();
+        } else
+            $user->vote_on_note($note_id, $type);
+
+        // $votes = Note::find($note_id)->votes;
+        // $color = 'black';
+        // if ($votes > 0)
+        //     $color = 'green';
+        // elseif ($votes < 0)
+        //     $color = 'red';
+        // return ['state' => '200 ok', 'error' => false];
+    }
 
 }
