@@ -61,11 +61,11 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/mail/one/{id}', 'AdminController@oneMailView');
     Route::get('/admin/users', 'AdminController@listUsers');
     Route::get('/admin/mail/log', 'AdminController@showMailLog');
-    Route::get('/admin/statistics','AdminController@statistics');
-    Route::get('/admin/event_requests','AdminController@eventRequests'); //viewing event request
-    Route::get('/admin/request/{id}','AdminController@viewRequest'); //viewing event information
-    Route::get('/admin/accept/{id}','AdminController@acceptRequest'); //accepting an event
-    Route::delete('/admin/reject/{id}','AdminController@rejectRequest'); //rejecting an event
+    Route::get('/admin/statistics', 'AdminController@statistics');
+    Route::get('/admin/event_requests', 'AdminController@eventRequests'); //viewing event request
+    Route::get('/admin/request/{id}', 'AdminController@viewRequest'); //viewing event information
+    Route::get('/admin/accept/{id}', 'AdminController@acceptRequest'); //accepting an event
+    Route::delete('/admin/reject/{id}', 'AdminController@rejectRequest'); //rejecting an event
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
 
 
@@ -101,25 +101,44 @@ Route::group(['middleware' => ['web']], function () {
     /**
      * Create a new calender for the user
      */
-    Route::post('calender/create','CalenderController@store');
+    Route::post('calender/create', 'CalenderController@store');
     /**
      * Show a calender for a specific user
      */
-    Route::get('calender/{calender_id}','CalenderController@show');
+    Route::get('calender/{calender_id}', 'CalenderController@show');
     /**
      * View the current authenticated user calender
      */
-    Route::get('calender','CalenderController@viewCalender');
+    Route::get('calender', 'CalenderController@viewCalender');
     /**
      * Add an event to the user's calender
      */
-    Route::get('calender/add/{event_id}','CalenderController@addEvent');
-
-
+    Route::get('calender/add/{event_id}', 'CalenderController@addEvent');
+    /**
+     * Show all events
+     */
+    Route::get('events', 'EventController@index');
+    /**
+     * Show a specific event
+     */
+    Route::get('events/{id}', 'EventController@show');
+    /**
+     * Show the calender of a specific user
+     */
+    Route::get('user/{user_id}/calender', 'CalenderController@showUserCalender');
+    /**
+     * Request to delete a note
+     */
     Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
+    /**
+     * A form to upload a note
+     */
     Route::get('/course/{courseID}/uploadNote', 'NotesController@upload_notes_form');
+    /**
+     * Upload a note
+     */
     Route::post('/course/{courseID}/uploadNote', 'NotesController@upload_notes');
-    
+
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -196,6 +215,6 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
     /*
      * Home page data
      */
-    Route::get('/home','ApiController@home');
+    Route::get('/home', 'ApiController@home');
 
 });

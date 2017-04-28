@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Calender;
 use App\Event;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
-class CalnderController extends Controller
+class CalenderController extends Controller
 {
     public function __construct()
     {
@@ -25,9 +26,10 @@ class CalnderController extends Controller
      */
     public function store(Request $request)
     {
+
         $user = Auth::user();
-        if ($user->calenders()->count() != 0) {
-            return "u already have a calender ";
+        if ($user->calender()->count() != 0) {
+            return redirect()->back();
         } else {
             $calender = new Calender();
             $calender->user_id = $user->id;
@@ -75,14 +77,39 @@ class CalnderController extends Controller
         $calender->events()->attach($event);
         return "Done";
     }
+
+    /**
+     * Remove an Event from user's calender
+     *
+     * @param $event_id
+     * @return string
+     */
     public function removeEvent($event_id)
     {
-        
         $user = Auth::user();
         $calender = $user->calender()->get();
         $event = Event::findOrFail($event_id);
         $calender->events()->detach($event);
         return "Successfully Removed From Your Calendar";
+    }
+
+    /**
+     * Showing the calender of user from the profile page
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showUserCalender($id)
+    {
+        $user = User::find($id);
+        $calender = $user->calender()->get()->first();
+        if ($calender == null) {
+            return view('user.calender', compact('calender', 'user'));
+        } else {
+            $events = $calender->events()->orderBy('date')->get();
+            return view('user.calender', compact('events', 'calender', 'user'));
+        }
+
     }
 
 }

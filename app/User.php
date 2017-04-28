@@ -346,7 +346,17 @@ class User extends Authenticatable
      */
     public function calender()
     {
-        return $this->hasMany('App\Calender')[0];
+        return $this->hasMany('App\Calender');
+    }
+
+    public function createdEvents()
+    {
+        return $this->hasMany('App\Event');
+    }
+
+    public function announcements()
+    {
+        return $this->hasMany('App\Announcement');
     }
 
 }
