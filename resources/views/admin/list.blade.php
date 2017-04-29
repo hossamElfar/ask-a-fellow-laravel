@@ -63,6 +63,13 @@
                     <a href="{{url('admin/event_requests')}}">Event Requests</a>
                 </td>
             </tr>
+            
+           <tr>
+                <td>
+                    <a href="{{url('admin/note_requests')}}">Note Upload/Delete Requests</a>
+                </td>
+            </tr>
+
 
         </table>
     </div>

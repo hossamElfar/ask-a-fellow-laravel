@@ -5,6 +5,7 @@
         <th>Course code</th>
         <th>Course name</th>
         <th>Questions</th>
+        <th>Notes</th>
     </tr>
     @foreach($courses as $course)
         <tr class="course_row" href="{{url('browse/'.$course->id)}}">
@@ -12,7 +13,7 @@
                 <td>{{$course->course_code}}</td>
                 <td>{{$course->course_name}}</td>
                 <td>{{count($course->questions()->get())}}</td>
-
+                <td><a href="{{url('browse/notes/'.$course->id)}}">View Notes</a></td>
         </tr>
     @endforeach
     <tr>

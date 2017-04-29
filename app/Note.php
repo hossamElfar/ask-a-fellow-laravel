@@ -1,14 +1,16 @@
 <?php
 
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
-  public function note()
+
+    public function comments()
     {
-        return $this->belongsTo('App\Note');
+        return $this->hasMany('App\NoteComment');
     }
 
     public function upvotes()
@@ -19,5 +21,14 @@ class Note extends Model
     public function downvotes()
     {
         return $this->hasMany('App\NoteVote')->where('type','=',1)->get();
+
+    public function user()
+    {
+        return $this->belongsTo('App\User','user_id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo('App\Course');
     }
 }

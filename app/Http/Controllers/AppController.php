@@ -15,10 +15,11 @@ use App\Question;
 use App\Answer;
 use App\Notification;
 use App\Feedback;
+use App\Note;
 use Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-
+use Response;
 
 class AppController extends Controller
 {
@@ -272,8 +273,27 @@ class AppController extends Controller
         Session::flash('feedback','Feedback submitted successfully');
         return Redirect::back();
     }
+    public function  list_notes($course_id)
+    { //TODO : Pagination , Front end View , Offsets ,
+        if(Auth::user())
+        $role = Auth::user()->role;
+      $course = Course::find($course_id);
+      if(!$course)
+          return 'Ooops! course not found';
 
+          $notes = $course->notes;
+        return view('notes.notes',compact('notes','role'));
+
+    }
+    public function view_note($note_id){
+      $note = Note::find($note_id);
+
+      $path = $note->path;
+
+      return Response::make(file_get_contents($path), 200, [
+      'Content-Type' => 'application/pdf',
+      'Content-Disposition' => 'inline; filename="'.$note->title.'"'
+      ]);
+    }
 
 }
-
-
