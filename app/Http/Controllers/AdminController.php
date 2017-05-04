@@ -18,6 +18,7 @@ use File;
 use App\Http\Requests;
 use App\Major;
 use App\Course;
+use App\ComponentCategory;
 use App\User;
 use App\Event;
 use App\AdminMail;
@@ -153,6 +154,47 @@ class AdminController extends Controller
         return redirect('admin/add_major');
     }
 
+    public function add_component_category_page()
+    {
+        $categories = ComponentCategory::all();
+        return view('admin.add_component_category',  compact(['categories']));
+    }
+
+    public function add_component_category(Request $request)
+    {
+        $this->validate($request, [
+            'category_name' => 'required|unique:components_categories,name'
+        ]);
+        $category = new ComponentCategory();
+        $category->name = $request->category_name;
+        $category->save();
+        return redirect('/admin/add_component_category');
+    }
+
+    public function delete_component_category($id)
+    {
+        $category = ComponentCategory::find($id);
+        $category->delete();
+        return redirect('/admin/add_component_category');
+    }
+
+    public function update_component_category_page($id)
+    {
+        $category = ComponentCategory::find($id);
+        return view('admin.update_component_category', compact(['category']));
+    }
+
+    public function update_component_category($id, Request $request)
+    {
+        $this->validate($request, [
+            'category_name' => 'required|unique:components_categories,name'
+        ]);
+
+        $category = ComponentCategory::find($id);
+        $category->name = $request->category_name;
+        $category->save();
+        return redirect('admin/add_component_category');
+    }
 
     public function view_feedbacks()
     {

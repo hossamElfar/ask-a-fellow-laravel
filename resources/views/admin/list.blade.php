@@ -23,6 +23,12 @@
 
             <tr>
                 <td>
+                    <a href="{{url('admin/add_component_category')}}">Add Component Category</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
                     <a href="{{url('admin/feedbacks')}}">View Feedbacks</a>
                 </td>
             </tr>
