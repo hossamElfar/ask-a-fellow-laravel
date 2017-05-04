@@ -48,19 +48,19 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/remove_badge/{id}', 'AdminController@remove_badge');
     Route::get('/admin/add_course', 'AdminController@add_course_page');
     Route::get('/admin/add_major', 'AdminController@add_major_page');
-    Route::get('/admin/add_component_category', 'AdminController@add_component_category_page'); // added
+    Route::get('/admin/add_component_category', 'AdminController@add_component_category_page');
     Route::post('/admin/add_major', 'AdminController@add_major');
     Route::post('/admin/add_course', 'AdminController@add_course');
-    Route::post('/admin/add_component_category', 'AdminController@add_component_category'); // added
+    Route::post('/admin/add_component_category', 'AdminController@add_component_category');
     Route::get('/admin/delete_course/{id}', 'AdminController@delete_course');
     Route::get('/admin/delete_major/{id}', 'AdminController@delete_major');
-    Route::get('/admin/delete_component_category/{id}', 'AdminController@delete_component_category');   // added
+    Route::get('/admin/delete_component_category/{id}', 'AdminController@delete_component_category');
     Route::get('/admin/update_course/{id}', 'AdminController@update_course_page');
     Route::get('/admin/update_major/{id}', 'AdminController@update_major_page');
-    Route::get('/admin/update_component_category/{id}', 'AdminController@update_component_category_page');  //added
+    Route::get('/admin/update_component_category/{id}', 'AdminController@update_component_category_page');
     Route::post('/admin/update_course/{id}', 'AdminController@update_course');
     Route::post('/admin/update_major/{id}', 'AdminController@update_major');
-    Route::post('/admin/update_component_category/{id}', 'AdminController@update_component_category');  // added
+    Route::post('/admin/update_component_category/{id}', 'AdminController@update_component_category');
     Route::get('/admin/feedbacks', 'AdminController@view_feedbacks');
     Route::get('/admin/reports', 'AdminController@view_reports');
     Route::get('/admin/mail/many', 'AdminController@manyMailView');
