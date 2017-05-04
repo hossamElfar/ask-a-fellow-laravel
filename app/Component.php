@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Component extends Model
 {
-<<<<<<< HEAD
-    //
-=======
     protected $fillable = [
         'title', 'description', 'contact_info', 'price',
         'image_path', 'accepted'
@@ -28,5 +25,4 @@ class Component extends Model
     {
         return $this->hasMany('App\ComponentQuestion');
     }
->>>>>>> e96ac43382cdd4f9077ef71621bd8729a126b873
 }

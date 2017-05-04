@@ -272,11 +272,14 @@ class AppController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|unique:components,title',
-            'picture' => 'image|max:1000',
             'description' => 'required',
-            'phone_number' => 'numeric',
-            'price' => 'numeric|min:0|max:10'
+            'image_path' => 'image|max:1000',
+            'contact_info' => 'required',
+            'price' => 'numeric|min:0|max:10',
+            'name'=>'required'
         ]);
+        \Log::info('This is some useful information.');
+        error_log('Some message here.');
         $component = new Component;
         $component->title = $request->title;
         $component->description = $request->description;
@@ -299,7 +302,7 @@ class AppController extends Controller
             $component->picture = $image["url"];
         }
         $component->save();
-        return redirect('/about');
+        return redirect('/');
     }
 
 }
