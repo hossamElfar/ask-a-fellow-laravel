@@ -104,6 +104,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_question', 'AjaxController@send_report_question');
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
+    Route::get('/add_component', 'AppController@add_component');
     Route::post('/user/post_component', 'AppController@post_component');
     
     Route::get('/admin/delete_note/{id}','AdminController@deleteNoteAdmin');

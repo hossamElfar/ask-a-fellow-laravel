@@ -16,10 +16,12 @@ use App\Answer;
 use App\Notification;
 use App\Feedback;
 use App\Component;
+use App\ComponentCategory;
 use App\Note;
 use Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Cloudinary\Uploader;
 use Response;
 
 class AppController extends Controller
@@ -35,7 +37,8 @@ class AppController extends Controller
             'subscribe_to_courses',
             'subscription_page',
             'post_question_all',
-            // 'post_component'
+            'add_component',
+            'post_component'
         ]]);
 
     }
@@ -279,43 +282,6 @@ class AppController extends Controller
         return view('notes.notes',compact('notes','role'));
     }
 
-    public function post_component(Request $request)
-    {
-        $this->validate($request, [
-            'title' => 'required|unique:components,title',
-            'description' => 'required',
-            'image_path' => 'image|max:1000',
-            'contact_info' => 'required',
-            'price' => 'numeric|min:0|max:10',
-            'name'=>'required'
-        ]);
-        \Log::info('This is some useful information.');
-        error_log('Some message here.');
-        $component = new Component;
-        $component->title = $request->title;
-        $component->description = $request->description;
-        if ($request->phone_number)
-        $component->phone_number = $request->phone_number;
-        else
-        $component->phone_number = 0;
-        $component->price = $request->price;
-        // $component->user_id = 1; // for testing
-        $component->user_id = Auth::user()->id;
-        if ($request->file('picture')) {
-            \Cloudinary::config(array(
-                "cloud_name" => env("CLOUDINARY_NAME"),
-                "api_key" => env("CLOUDINARY_KEY"),
-                "api_secret" => env("CLOUDINARY_SECRET")
-            ));
-            // upload and set new picture
-            $file = $request->file('picture');
-            $image = Uploader::upload($file->getRealPath(), ["width" => 300, "height" => 300, "crop" => "limit"]);
-            $component->picture = $image["url"];
-        }
-        $component->save();
-        return redirect('/');
-    }
-
     public function view_note($note_id){
       $note = Note::find($note_id);
 
@@ -325,5 +291,46 @@ class AppController extends Controller
       'Content-Type' => 'application/pdf',
       'Content-Disposition' => 'inline; filename="'.$note->title.'"'
       ]);
+    }
+
+    public function add_component(Request $request)
+    {
+        $category = ComponentCategory::all();
+        return view('user.add_component', ['category' => $category]);
+    }
+
+    public function post_component(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|unique:components,title',
+            'description' => 'required',
+            'image_path' => 'image|max:1000',
+            'contact_info' => 'required',
+            'price' => 'numeric|min:0|max:1000000',
+            'category'=>'required'
+        ]);
+        // seed the database first for testing
+        $categories = ComponentCategory::all();
+        $component = new Component;
+        $component->title = $request->title;
+        $component->description = $request->description;
+        $component->contact_info = $request->contact_info;
+        $component->price = $request->price;
+        $component->category_id = $request->category;
+        $component->creator_id = Auth::user()->id;
+        if ($request->file('image_path')) {
+            \Cloudinary::config(array(
+                "cloud_name" => env("CLOUDINARY_NAME"),
+                "api_key" => env("CLOUDINARY_KEY"),
+                "api_secret" => env("CLOUDINARY_SECRET")
+            ));
+            // upload and set new picture
+            $file = $request->file('image_path');
+            $image = Uploader::upload($file->getRealPath(), ["width" => 300, "height" => 300, "crop" => "limit"]);
+            $component->image_path = $image["url"];
+        }
+        $component->save();
+        Session::flash('Added', 'Done, admins will review your component soon!');
+        return redirect()->back();
     }
 }
