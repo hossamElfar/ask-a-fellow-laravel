@@ -61,6 +61,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/update_course/{id}', 'AdminController@update_course');
     Route::post('/admin/update_major/{id}', 'AdminController@update_major');
     Route::post('/admin/update_component_category/{id}', 'AdminController@update_component_category');
+    Route::get('/admin/delete_accept_component', 'AdminController@delete_accept_component_page');
+    Route::get('/admin/delete_component/{id}', 'AdminController@delete_component');
+    Route::get('/admin/accept_component/{id}', 'AdminController@accept_component');
+    Route::get('/admin/reject_component/{id}', 'AdminController@reject_component');
     Route::get('/admin/feedbacks', 'AdminController@view_feedbacks');
     Route::get('/admin/reports', 'AdminController@view_reports');
     Route::get('/admin/mail/many', 'AdminController@manyMailView');
