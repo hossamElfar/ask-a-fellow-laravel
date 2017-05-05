@@ -15,10 +15,13 @@ use App\Question;
 use App\Answer;
 use App\Notification;
 use App\Feedback;
+use App\Component;
+use App\ComponentCategory;
 use App\Note;
 use Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Cloudinary\Uploader;
 use Response;
 
 class AppController extends Controller
@@ -33,7 +36,9 @@ class AppController extends Controller
             'view_notifications',
             'subscribe_to_courses',
             'subscription_page',
-            'post_question_all'
+            'post_question_all',
+            'add_component',
+            'post_component'
         ]]);
 
     }
@@ -218,13 +223,6 @@ class AppController extends Controller
         return redirect(url('answers/'.$answer->question_id));
     }
 
-
-
-
-
-
-
-
     public function view_notifications()
     {
         $user = Auth::user();
@@ -277,14 +275,13 @@ class AppController extends Controller
     { //TODO : Pagination , Front end View , Offsets ,
         if(Auth::user())
         $role = Auth::user()->role;
-      $course = Course::find($course_id);
-      if(!$course)
-          return 'Ooops! course not found';
-
-          $notes = $course->notes;
+        $course = Course::find($course_id);
+        if(!$course)
+           return 'Ooops! course not found';
+        $notes = $course->notes;
         return view('notes.notes',compact('notes','role'));
-
     }
+
     public function view_note($note_id){
       $note = Note::find($note_id);
 
@@ -296,4 +293,44 @@ class AppController extends Controller
       ]);
     }
 
+    public function add_component(Request $request)
+    {
+        $category = ComponentCategory::all();
+        return view('user.add_component', ['category' => $category]);
+    }
+
+    public function post_component(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|unique:components,title',
+            'description' => 'required',
+            'image_path' => 'image|max:1000',
+            'contact_info' => 'required',
+            'price' => 'numeric|min:0|max:1000000',
+            'category'=>'required'
+        ]);
+        // seed the database first for testing
+        $categories = ComponentCategory::all();
+        $component = new Component;
+        $component->title = $request->title;
+        $component->description = $request->description;
+        $component->contact_info = $request->contact_info;
+        $component->price = $request->price;
+        $component->category_id = $request->category;
+        $component->creator_id = Auth::user()->id;
+        if ($request->file('image_path')) {
+            \Cloudinary::config(array(
+                "cloud_name" => env("CLOUDINARY_NAME"),
+                "api_key" => env("CLOUDINARY_KEY"),
+                "api_secret" => env("CLOUDINARY_SECRET")
+            ));
+            // upload and set new picture
+            $file = $request->file('image_path');
+            $image = Uploader::upload($file->getRealPath(), ["width" => 300, "height" => 300, "crop" => "limit"]);
+            $component->image_path = $image["url"];
+        }
+        $component->save();
+        Session::flash('Added', 'Done, admins will review your component soon!');
+        return redirect()->back();
+    }
 }
