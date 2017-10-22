@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Note;
+use App\NoteComment;
 use Auth;
 use Log;
 
@@ -47,7 +48,61 @@ class NotesController extends Controller
 
   }
 
-      public function upload_notes_form(Request $request,$courseID)
+  // view note details
+    public function view_note_details($note_id)
+    {
+
+        $note = Question::find($note_id);
+        if(!$note)
+            return 'Ooops! note not found';
+        //sort answers
+        $comments = $note->comments()->get();
+
+        return view('notes.note_details',compact(['note','comments']));
+    }
+
+
+    // post comment 
+    public function post_note_comment(Request $request, $note_id)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return ['state' => 'error', 'error' => true];
+        }
+        $comment = new NoteComment();
+        $comment->body = $request->comment;
+        $comment->user_id = Auth::user()->id;
+        $comment->note_id = $note_id;
+        $comment->save();
+        // return ['state' => '200 ok', 'error' => false,'data'=>$comment];
+        return redirect(url('/notes/view_note_details/'.$note_id);
+    }
+
+    // vote note
+    public function vote_note($note_id, $type)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return ['state' => 'error', 'error' => true];
+        }
+
+        if ($type == 0 && count($user->upvotesOnNote($note_id)))
+            return ['state' => 'cannot up vote twice', 'error' => true];
+        if ($type == 1 && count($user->downvotesOnNote($note_id)))
+            return ['state' => 'cannot down vote twice', 'error' => true];
+        if ($type == 0 && count($user->downvotesOnNote($note_id))) {
+            $vote = NoteVote::where('user_id', '=', Auth::user()->id)->where('note_id', '=', $note_id)->first();
+            $vote->delete();
+        } else if ($type == 1 && count($user->upvotesOnNote($note_id))) {
+            $vote = NoteVote::where('user_id', '=', Auth::user()->id)->where('note_id', '=', $note_id)->first();
+            $vote->delete();
+        } else
+            $user->vote_on_note($note_id, $type);        
+    }
+
+
+
+    public function upload_notes_form(Request $request,$courseID)
     {
         $user = Auth::user();
         if (!$user)
@@ -77,6 +132,7 @@ class NotesController extends Controller
 
         $note->save();
         return redirect('/');
+
     }
 
 }
