@@ -16,7 +16,7 @@
         <button style="float:right" class ="icon-button"><span class="glyphicon glyphicon-trash" style ="float:right"></span></button>
       </form>
   @endif
-      <h2  > {{$note->title}}</h2>
+      <h2  ><a  href="/notes/view_note_details/{{$note->id}}"> {{$note->title}} </a></h2>
       <hr />
       <p>{!! nl2br(e($note->description)) !!}</p>
       <hr />
