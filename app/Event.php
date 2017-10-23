@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $fillable = [
-        'title', 'description', 'date', 'place', 'creator_id', 'course_id'
+
+        'title', 'description', 'date', 'place'
     ];
 
     public function calenders()
@@ -29,4 +30,5 @@ class Event extends Model
     {
         return $this->belongsTo('App\User');
     }
+
 }
