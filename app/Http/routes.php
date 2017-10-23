@@ -119,13 +119,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_question', 'AjaxController@send_report_question');
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
-<<<<<<< HEAD
-=======
-    //
 
     Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
-});
->>>>>>> fd78d73be66b270efe30c76b7b0ebbba4041ecd9
 
     Route::get('/add_component', 'AppController@add_component');
     Route::post('/user/post_component', 'AppController@post_component');
