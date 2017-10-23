@@ -24,7 +24,7 @@
                 @foreach($stores as $store)
                 <tr>
                     <td>{{ $store->name }}</td>
-                    <td>{{ $store->address }}</td>
+                    <td>{{ $store->location }}</td>
                     <td><a onclick="return confirm('Are you sure?');" href="{{url('admin/delete_store/'.$store->id)}}">Delete</a></td>
                     <td><a href="{{url('admin/update_store/'.$store->id)}}">Update</a></td>
                 </tr>
@@ -45,7 +45,32 @@
                 <input type="text" class="form-control" id="store_address" name="store_address" placeholder="Store Address">
             </div>
 
-            <button type="submit" class="btn btn-default">Add Course</button>
+            <div class="form-group">
+                <label for="store_rate">Store Rate</label>
+                <input type="number" min="1" max="5" class="form-control" id="store_rate" name="store_rate" placeholder="Store Rate">
+            </div>
+
+            <div class="form-group">
+                <label for="store_review">Store Review</label>
+                <input type="text" class="form-control" id="store_review" name="store_review" placeholder="Store Review">
+            </div>
+
+            <div class="form-group">
+                <label for="logoPath">Store Logo</label>
+                <input type="file" id="logoPath" name="logoPath">
+            </div> 
+
+            <div class="form-group">
+                <label for="store_address">Store Description</label>
+                <input type="text" class="form-control" id="store_description" name="store_description" placeholder="Store Description">
+            </div>
+
+            <div class="form-group">
+                <label for="store_phone_number">Store Phone Number</label>
+                <input type="text" class="form-control" id="store_phone_number" name="store_phone_number" placeholder="Store Phone Number">
+            </div>
+
+            <button type="submit" class="btn btn-default">Add Store</button>
 
             <div class="error" style="color:red">
                 @include('errors')

@@ -81,7 +81,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/event_requests', 'AdminController@eventRequests'); //viewing event request
     Route::get('/admin/request/{id}', 'AdminController@viewRequest'); //viewing event information
     Route::get('/admin/accept/{id}', 'AdminController@acceptRequest'); //accepting an event
-    Route::delete('/admin/reject/{id}', 'AdminController@rejectRequest'); //rejecting an event
+    Route::get('/admin/reject/{id}', 'AdminController@rejectRequest'); //rejecting an event
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
 
     /** Routes for admin approving/rejectin note upload and deletion **/

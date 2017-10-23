@@ -26,21 +26,9 @@
 
               <div class="panel-body">
                
-                <a href="/admin/accept/{{ $event->id }}" id="accept">Accept Request</a>
-				        <br>
-
-				        <a href="/admin/request/{{ $event->id }}" id="reject">Reject Request</a>
-                
-                  <div id="deleteReq" style="display: none;">
-                    <form method="POST" action="/admin/reject/{{ $event->id }}">
-                        		{{ method_field('DELETE') }}
-        				    	<div class="form-group">
-        				    		<h3><b>Are you sure want to delete this review?</b></h3>
-        				    		<span class="glyphicon glyphicon-trash"></span>
-        						  	<button type="submit" class="btn">Delete Request</button>
-        						  </div>
-        					  </form>
-        				  </div>
+                <a href="/admin/accept/{{ $event->id }}">Accept Request</a>
+				        <br></br>
+                <a onclick="return confirm('Are you sure want to reject this request?');" href="/admin/reject/{{ $event->id }}">Reject Request</a>
                
               </div>
                 
@@ -51,14 +39,3 @@
 </div>
 
 @endsection
-
-
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript">
-  $(document).ready(function () {
-    $("#reject").click(function () {
-       $("#deleteReq").show();  
-       return false;           
-    });
-  });
- </script>

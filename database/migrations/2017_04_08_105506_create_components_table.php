@@ -25,7 +25,7 @@ class CreateComponentsTable extends Migration
             $table->integer('creator_id')->unsigned()->index();
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('category_id')->unsigned()->index();
-            $table->foreign('category_id')->references('id')->on('components_categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('component_categories')->onDelete('cascade');
         });
     }
 
