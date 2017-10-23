@@ -393,19 +393,6 @@ class AdminController extends Controller
         return view('admin.event', compact(['event', 'creator']));
     }
 
-    public function eventRequests()
-    {
-        $requests = Event::all()->where('verified',0);
-        return view('admin.event_requests')->with('requests',$requests);
-    }
-
-    public function viewRequest($id)
-    {
-        $event = Event::find($id);
-        $creator = User::find($event->creator_id);
-        return view('admin.event', compact(['event', 'creator']));
-    }
-
     //function to reject event requests by searching and removing it from the database
     public function rejectRequest($id)
     {
