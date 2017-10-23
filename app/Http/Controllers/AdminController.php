@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Filesystem\Filesystem; 
-use Response; 
-use File; 
+use Illuminate\Filesystem\Filesystem;
+use Response;
+use File;
 use App\Http\Requests;
 use App\Major;
 use App\Course;
@@ -23,6 +23,7 @@ use App\ComponentCategory;
 use App\User;
 use App\Event;
 use App\AdminMail;
+use App\Store;
 use Mail;
 use Session;
 use Auth;
@@ -51,7 +52,6 @@ class AdminController extends Controller
 
     public function add_course(Request $request)
     {
-//        dd($request);
         $this->validate($request, [
             'course_code' => 'alpha_num|required',
             'course_name' => 'required',
@@ -410,18 +410,62 @@ class AdminController extends Controller
         return redirect('admin/event_requests');
     }
 
+    public function add_store_page()
+    {
+        $stores = Store::all();
+        return view('admin.add_store')->with('stores', $stores);
+    }
+
+    public function add_store(Request $request)
+    {
+        $this->validate($request, [
+            'store_name' => 'required',
+            'store_address' => 'required',
+        ]);
+        $store = new Store();
+        $store->name = $request->store_name;
+        $store->address = $request->store_address;
+        $store->save();
+        return redirect('admin/add_store');
+    }
+
+    public function delete_store($id)
+    {
+        $store = Store::find($id);
+        $store->delete();
+        return redirect('admin/add_store');
+    }
+
+    public function update_store_page($id)
+    {
+        $store = Store::find($id);
+        return view('admin.update_store')->with('store', $store);
+    }
+
+    public function update_store($id, Request $request)
+    {
+        $this->validate($request, [
+            'store_name' => 'required',
+            'store_address' => 'required',
+        ]);
+        $store = Store::find($id);
+        $store->name = $request->store_name;
+        $store->address = $request->store_address;
+        $store->save();
+        return redirect('admin/add_store');
+    }
 
     //function to get all node upload requests
     public function noteRequests() {
           $notes_upload = DB::table('notes')->where('notes.request_upload', '=', 1)
                   ->join('users', 'notes.user_id', '=', 'users.id')
                   ->join('courses', 'notes.course_id', '=', 'courses.id')
-                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code') 
+                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code')
                   ->get();
          $notes_delete = DB::table('notes')->where('notes.request_delete', '=', 1)
                   ->join('users', 'notes.user_id', '=', 'users.id')
                   ->join('courses', 'notes.course_id', '=', 'courses.id')
-                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code') 
+                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code')
                   ->get();
 
           return view('admin.upload_delete_requests', compact(['notes_upload', 'notes_delete']));
@@ -439,36 +483,33 @@ class AdminController extends Controller
     public function deleteNote($id) {
           $note = Note::find($id);
           File::delete($note->path);
-          Note::destroy($id); 
+          Note::destroy($id);
 
         return redirect('admin/note_requests');
     }
 
     //opens the note file inline in the browser
     public function viewNote($id) {
-       $note =  Note::find($id);  
+       $note =  Note::find($id);
 
-    return Response::make(file_get_contents($note->path), 200, [
-        'Content-Type' => 'application/pdf',
-        'Content-Disposition' => 'inline; filename="'.$note->title.'"'
-    ]);
-        
+        return Response::make(file_get_contents($note->path), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$note->title.'"'
+        ]);
     }
 
     //Function to Delete the note as an admin
     public function deleteNoteAdmin($id) {
         if(Auth::user()){
-        $role  = Auth::user()->role;
-      if($role==1){
-          $note = Note::find($id);
-          $course_id = $note->course_id;
-          $note->delete();
-          return Redirect::back();
-      }else{
-            return Redirect::back();
-      }
-
-        }}
-
-  
+            $role  = Auth::user()->role;
+            if($role==1){
+              $note = Note::find($id);
+              $course_id = $note->course_id;
+              $note->delete();
+              return Redirect::back();
+          } else {
+                return Redirect::back();
+          }
+        }
+    }
 }
