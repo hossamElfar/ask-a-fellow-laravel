@@ -27,8 +27,7 @@
               <div class="panel-body">
                
                 <a href="/admin/accept/{{ $event->id }}" id="accept">Accept Request</a>
-                  
-				        <br></br>
+				        <br>
 
 				        <a href="/admin/request/{{ $event->id }}" id="reject">Reject Request</a>
                 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Note;
 use App\NoteComment;
+
 use Auth;
 use Log;
 

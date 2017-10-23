@@ -34,6 +34,19 @@ class UserController extends Controller
         return view('user.answers', compact(['user']));
     }
 
+    public function view_storelist()
+    {
+        $stores = Store::all();
+        return view('user.stores', compact(['stores']));
+    }
+     public function view_storedetails($id) //////////////////////////////
+    {
+        $storeDetail = Store::find($id);
+        
+        return view('user.store_details', compact(['storeDetail']));
+    }
+
+
     public function updateInfoPage()
     {
         $user = Auth::user();

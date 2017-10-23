@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
-
+    
     public function comments()
     {
         return $this->hasMany('App\NoteComment');
@@ -31,4 +31,5 @@ class Note extends Model
     {
         return $this->belongsTo('App\Course');
     }
+
 }
