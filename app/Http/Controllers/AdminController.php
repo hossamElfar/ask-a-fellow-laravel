@@ -158,13 +158,13 @@ class AdminController extends Controller
     public function add_component_category_page()
     {
         $categories = ComponentCategory::all();
-        return view('admin.add_component_category',  compact(['categories']));
+        return view('admin.add_component_category')->with('categories', $categories);
     }
 
     public function add_component_category(Request $request)
     {
         $this->validate($request, [
-            'category_name' => 'required|unique:components_categories,name'
+            'category_name' => 'required|unique:component_categories,name'
         ]);
         $category = new ComponentCategory();
         $category->name = $request->category_name;
@@ -377,6 +377,7 @@ class AdminController extends Controller
         $users = User::all()->count();
         return view('admin.statistics', compact(['questions', 'answers', 'users']));
     }
+
     //function to view all event requests
     public function eventRequests()
     {
@@ -421,10 +422,20 @@ class AdminController extends Controller
         $this->validate($request, [
             'store_name' => 'required',
             'store_address' => 'required',
+            'store_rate' => 'required',
+            'store_review' => 'required',
+            'logoPath' => 'required',
+            'store_description' => 'required',
+            'store_phone_number' => 'required',
         ]);
         $store = new Store();
         $store->name = $request->store_name;
-        $store->address = $request->store_address;
+        $store->location = $request->store_address;
+        $store->rate_count = $request->store_rate;
+        $store->review = $request->store_review;
+        $store->logo = $request->logoPath;
+        $store->description = $request->store_description;
+        $store->phone = $request->store_phone_number;
         $store->save();
         return redirect('admin/add_store');
     }
@@ -447,10 +458,20 @@ class AdminController extends Controller
         $this->validate($request, [
             'store_name' => 'required',
             'store_address' => 'required',
+            'store_rate' => 'required',
+            'store_review' => 'required',
+            'logoPath' => 'required',
+            'store_description' => 'required',
+            'store_phone_number' => 'required',
         ]);
         $store = Store::find($id);
         $store->name = $request->store_name;
-        $store->address = $request->store_address;
+        $store->location = $request->store_address;
+        $store->rate_count = $request->store_rate;
+        $store->review = $request->store_review;
+        $store->logo = $request->logoPath;
+        $store->description = $request->store_description;
+        $store->phone = $request->store_phone_number;
         $store->save();
         return redirect('admin/add_store');
     }

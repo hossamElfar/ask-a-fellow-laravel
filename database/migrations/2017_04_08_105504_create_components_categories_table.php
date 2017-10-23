@@ -12,7 +12,7 @@ class CreateComponentsCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('components_categories', function(Blueprint $table) {
+        Schema::create('component_categories', function(Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateComponentsCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('components_categories');
+        Schema::drop('component_categories');
     }
 }
