@@ -65,6 +65,11 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/delete_component/{id}', 'AdminController@delete_component');
     Route::get('/admin/accept_component/{id}', 'AdminController@accept_component');
     Route::get('/admin/reject_component/{id}', 'AdminController@reject_component');
+    Route::get('/admin/add_store', 'AdminController@add_store_page');
+    Route::post('/admin/add_store', 'AdminController@add_store');
+    Route::get('/admin/delete_store/{id}', 'AdminController@delete_store');
+    Route::get('/admin/update_store/{id}', 'AdminController@update_store_page');
+    Route::post('/admin/update_store/{id}', 'AdminController@update_store');
     Route::get('/admin/feedbacks', 'AdminController@view_feedbacks');
     Route::get('/admin/reports', 'AdminController@view_reports');
     Route::get('/admin/mail/many', 'AdminController@manyMailView');
@@ -179,11 +184,11 @@ Route::group(['middleware' => ['web']], function () {
 
 });
 
-Route::group(['middleware' => 'web'], function () {
-    Route::auth();
-    Route::get('/register/verify/{token}', 'Auth\AuthController@verify');
-    Route::get('/home', 'HomeController@index');
-});
+// Route::group(['middleware' => 'web'], function () {
+//     Route::auth();
+//     Route::get('/register/verify/{token}', 'Auth\AuthController@verify');
+//     Route::get('/home', 'HomeController@index');
+// });
 
 /*
 |==========================================================================
