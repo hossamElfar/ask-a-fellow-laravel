@@ -23,6 +23,18 @@
 
             <tr>
                 <td>
+                    <a href="{{url('admin/add_store')}}">Add Store</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="{{url('admin/add_component_category')}}">Add Component Category</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
                     <a href="{{url('admin/feedbacks')}}">View Feedbacks</a>
                 </td>
             </tr>
@@ -56,6 +68,23 @@
             <tr>
                 <td>
                     <a href="{{url('admin/statistics')}}">Site statistics</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="{{url('admin/event_requests')}}">Event Requests</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="{{url('admin/delete_accept_component')}}">Delete/Accept Component</a>
+                </td>
+            </tr>
+            
+           <tr>
+                <td>
+                    <a href="{{url('admin/note_requests')}}">Note Upload/Delete Requests</a>
                 </td>
             </tr>
 

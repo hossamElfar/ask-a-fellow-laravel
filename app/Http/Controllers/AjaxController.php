@@ -90,6 +90,8 @@ class AjaxController extends Controller
         if($type == 1 && count($user->downvotesOnQuestion($question_id)))
             return 'Cannot downvote twice';
         if($type == 0 && count($user->downvotesOnQuestion($question_id))) {
+
+
             $vote = QuestionVote::where('user_id','=',Auth::user()->id)->where('question_id','=',$question_id)->first();
             $vote->delete();
         }
