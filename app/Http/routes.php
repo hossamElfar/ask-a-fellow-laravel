@@ -266,5 +266,9 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
      * Get the available components
      */
     Route::get('/components', 'API\ComponentAPIController@view_components');
+    /*
+     *  Post a question about a component
+     */
+    Route::post('/component/ask/{component_id}', 'API\ComponentAPIController@component_ask');
 
 });
