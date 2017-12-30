@@ -262,5 +262,9 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
      * Home page data
      */
     Route::get('/home', 'ApiController@home');
+    /*
+     * Get the available components
+     */
+    Route::get('/components', 'API\ComponentAPIController@view_components');
 
 });
