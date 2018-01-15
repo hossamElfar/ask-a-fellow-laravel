@@ -30,6 +30,11 @@ Route::group(['middleware' => ['web']], function () {
         return view('welcome');
     });
 
+    /*
+     * Get the available components
+     */
+    Route::post('/api/stores/{name}', 'API\StoresAPIController@sort_by_rating');
+
 
     Route::get('/about', 'StaticController@about');
     Route::get('/howitworks', 'StaticController@howitworks');

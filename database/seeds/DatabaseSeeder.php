@@ -104,5 +104,14 @@ class DatabaseSeeder extends Seeder
         DB::table('components_categories')->insert([
             'name' => 'Media Design'
         ]);
+
+        DB::table('stores')->insert([
+            'name' => 'Genedy Store',
+            'location' => 'Genedy Street',
+            'rate' => 'genedymohamed96@gmail.com',
+            'review' => 'helloworld',
+            'description' => 'this is one of the best stores',
+            'phone' => '01122265156',
+        ]);
     }
 }
