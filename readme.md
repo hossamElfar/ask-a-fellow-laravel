@@ -11,7 +11,7 @@ Note that this guide assumes that you installed the following in your computer:-
 3. git
 
 ### Cloning
-1. type `git clone https://github.com/hossamElfar/ask-a-fellow-laravel.git`
+1. type `git clone https://github.com/AyaKhaled1/ask-a-fellow-laravel.git`
 2. navigate to the project directory and type `composer install`
 
 ### confuguring .env file and project cashing

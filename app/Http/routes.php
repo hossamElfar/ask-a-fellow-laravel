@@ -30,14 +30,17 @@ Route::group(['middleware' => ['web']], function () {
         return view('welcome');
     });
 
+    /*
+     * Get the available components
+     */
 
     Route::get('/about', 'StaticController@about');
     Route::get('/howitworks', 'StaticController@howitworks');
 
     Route::get('/user/update', 'UserController@updateInfoPage');
     Route::post('/user/update', 'UserController@updateInfo');
-     Route::get('/user/stores', 'UserController@view_storelist');
-    Route::get('/user/stores/{{ $store->id }}', 'UserController@view_storedetails');
+    Route::get('/user/stores', 'UserController@view_storelist');
+    Route::get('/user/stores/{id}', 'UserController@view_store_details');
     Route::get('/user/{id}', 'UserController@show');
     Route::get('/user/{id}/questions', 'UserController@show');
     Route::get('/user/{id}/answers', 'UserController@showProfileAnswers');
@@ -262,5 +265,18 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
      * Home page data
      */
     Route::get('/home', 'ApiController@home');
+    /*
+     * Get the available components
+     */
+    Route::get('/components', 'API\ComponentAPIController@view_components');
+    /*
+     *  Post a question about a component
+     */
+    Route::post('/component/ask/{component_id}', 'API\ComponentAPIController@component_ask');
+    /*
+     *  Search and sort stores
+     */
+    Route::get('/stores/searchandsort/{id}/{name}/{location}/{orderby}/{ordertype}', 'API\StoresAPIController@search_and_sort_stores');
+
 
 });
