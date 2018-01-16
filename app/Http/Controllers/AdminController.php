@@ -7,16 +7,27 @@ use App\AnswerReport;
 use App\Feedback;
 use App\Question;
 use App\QuestionReport;
+use App\Note;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Filesystem\Filesystem;
+use Response;
+use File;
 use App\Http\Requests;
 use App\Major;
 use App\Course;
+use App\Component;
+use App\ComponentCategory;
 use App\User;
+use App\Event;
 use App\AdminMail;
+use App\Store;
 use Mail;
 use Session;
 use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -41,7 +52,6 @@ class AdminController extends Controller
 
     public function add_course(Request $request)
     {
-//        dd($request);
         $this->validate($request, [
             'course_code' => 'alpha_num|required',
             'course_name' => 'required',
@@ -145,6 +155,76 @@ class AdminController extends Controller
         return redirect('admin/add_major');
     }
 
+    public function add_component_category_page()
+    {
+        $categories = ComponentCategory::all();
+        return view('admin.add_component_category')->with('categories', $categories);
+    }
+
+    public function add_component_category(Request $request)
+    {
+        $this->validate($request, [
+            'category_name' => 'required|unique:component_categories,name'
+        ]);
+        $category = new ComponentCategory();
+        $category->name = $request->category_name;
+        $category->save();
+        return redirect('/admin/add_component_category');
+    }
+
+    public function delete_component_category($id)
+    {
+        $category = ComponentCategory::find($id);
+        $category->delete();
+        return redirect('/admin/add_component_category');
+    }
+
+    public function update_component_category_page($id)
+    {
+        $category = ComponentCategory::find($id);
+        return view('admin.update_component_category', compact(['category']));
+    }
+
+    public function update_component_category($id, Request $request)
+    {
+        $this->validate($request, [
+            'category_name' => 'required|unique:components_categories,name'
+        ]);
+
+        $category = ComponentCategory::find($id);
+        $category->name = $request->category_name;
+        $category->save();
+        return redirect('admin/add_component_category');
+    }
+
+    public function delete_accept_component_page()
+    {
+        $components = Component::all();
+        return view('admin.delete_accept_component',  compact(['components']));
+    }
+
+    public function delete_component($id)
+    {
+        $component = Component::find($id);
+        $component->delete();
+        return redirect('/admin/delete_accept_component');
+    }
+
+    public function accept_component($id)
+    {
+        $component = Component::find($id);
+        $component->accepted = 1;
+        $component->save();
+        return redirect('admin/delete_accept_component');
+    }
+
+    public function reject_component($id)
+    {
+        $component = Component::find($id);
+        $component->delete();
+        $creator_id = $component->creator_id;
+        return redirect('/admin/mail/one/'.$creator_id);
+    }
 
     public function view_feedbacks()
     {
@@ -267,6 +347,7 @@ class AdminController extends Controller
 
     public function add_badge()
     {
+
         $users = User::orderBy('first_name', 'asc');
         return view('admin.badge', compact(['users']));
     }
@@ -297,5 +378,159 @@ class AdminController extends Controller
         return view('admin.statistics', compact(['questions', 'answers', 'users']));
     }
 
+    //function to view all event requests
+    public function eventRequests()
+    {
+        $requests = Event::all()->where('verified',0);
+        return view('admin.event_requests')->with('requests',$requests);
+    }
 
+    //to view information about the clicked event and its creator with the option to accept or delete it
+    public function viewRequest($id)
+    {
+        $event = Event::find($id);
+        $creator = User::find($event->creator_id);
+        //return $event;
+        return view('admin.event', compact(['event', 'creator']));
+    }
+
+    //function to reject event requests by searching and removing it from the database
+    public function rejectRequest($id)
+    {
+        $event = Event::find($id);
+        $event-> delete();
+        return redirect('admin/event_requests');
+    }
+
+    //function to accept event requests by searching and setting its verified flag to true
+    public function acceptRequest($id)
+    {
+        $event =  Event::Find($id);
+        $event->verified= 1;
+        $event->save();
+        return redirect('admin/event_requests');
+    }
+
+    public function add_store_page()
+    {
+        $stores = Store::all();
+        return view('admin.add_store')->with('stores', $stores);
+    }
+
+    public function add_store(Request $request)
+    {
+        $this->validate($request, [
+            'store_name' => 'required',
+            'store_address' => 'required',
+            'store_rate' => 'required',
+            'store_review' => 'required',
+            'logoPath' => 'required',
+            'store_description' => 'required',
+            'store_phone_number' => 'required',
+        ]);
+        $store = new Store();
+        $store->name = $request->store_name;
+        $store->location = $request->store_address;
+        $store->rate_count = $request->store_rate;
+        $store->review = $request->store_review;
+        $store->logo = $request->logoPath;
+        $store->description = $request->store_description;
+        $store->phone = $request->store_phone_number;
+        $store->save();
+        return redirect('admin/add_store');
+    }
+
+    public function delete_store($id)
+    {
+        $store = Store::find($id);
+        $store->delete();
+        return redirect('admin/add_store');
+    }
+
+    public function update_store_page($id)
+    {
+        $store = Store::find($id);
+        return view('admin.update_store')->with('store', $store);
+    }
+
+    public function update_store($id, Request $request)
+    {
+        $this->validate($request, [
+            'store_name' => 'required',
+            'store_address' => 'required',
+            'store_rate' => 'required',
+            'store_review' => 'required',
+            'logoPath' => 'required',
+            'store_description' => 'required',
+            'store_phone_number' => 'required',
+        ]);
+        $store = Store::find($id);
+        $store->name = $request->store_name;
+        $store->location = $request->store_address;
+        $store->rate_count = $request->store_rate;
+        $store->review = $request->store_review;
+        $store->logo = $request->logoPath;
+        $store->description = $request->store_description;
+        $store->phone = $request->store_phone_number;
+        $store->save();
+        return redirect('admin/add_store');
+    }
+
+    //function to get all node upload requests
+    public function noteRequests() {
+          $notes_upload = DB::table('notes')->where('notes.request_upload', '=', 1)
+                  ->join('users', 'notes.user_id', '=', 'users.id')
+                  ->join('courses', 'notes.course_id', '=', 'courses.id')
+                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code')
+                  ->get();
+         $notes_delete = DB::table('notes')->where('notes.request_delete', '=', 1)
+                  ->join('users', 'notes.user_id', '=', 'users.id')
+                  ->join('courses', 'notes.course_id', '=', 'courses.id')
+                  ->select('notes.*', 'users.first_name', 'users.last_name', 'courses.course_name', 'courses.course_code')
+                  ->get();
+
+          return view('admin.upload_delete_requests', compact(['notes_upload', 'notes_delete']));
+    }
+
+    //approved the uplaod of a note by changing its request_upload status to 0
+    public function approveNoteUpload($id) {
+        $note = Note::find($id);
+        $note->request_upload = 0;
+        $note->save();
+        return redirect('admin/note_requests');
+    }
+
+    //deletes note using its ID
+    public function deleteNote($id) {
+          $note = Note::find($id);
+          File::delete($note->path);
+          Note::destroy($id);
+
+        return redirect('admin/note_requests');
+    }
+
+    //opens the note file inline in the browser
+    public function viewNote($id) {
+       $note =  Note::find($id);
+
+        return Response::make(file_get_contents($note->path), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$note->title.'"'
+        ]);
+    }
+
+    //Function to Delete the note as an admin
+    public function deleteNoteAdmin($id) {
+        if(Auth::user()){
+            $role  = Auth::user()->role;
+            if($role==1){
+              $note = Note::find($id);
+              $course_id = $note->course_id;
+              $note->delete();
+              return Redirect::back();
+          } else {
+                return Redirect::back();
+          }
+        }
+    }
 }

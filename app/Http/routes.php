@@ -30,16 +30,20 @@ Route::group(['middleware' => ['web']], function () {
         return view('welcome');
     });
 
+    /*
+     * Get the available components
+     */
 
     Route::get('/about', 'StaticController@about');
     Route::get('/howitworks', 'StaticController@howitworks');
 
     Route::get('/user/update', 'UserController@updateInfoPage');
     Route::post('/user/update', 'UserController@updateInfo');
+    Route::get('/user/stores', 'UserController@view_storelist');
+    Route::get('/user/stores/{id}', 'UserController@view_store_details');
     Route::get('/user/{id}', 'UserController@show');
     Route::get('/user/{id}/questions', 'UserController@show');
     Route::get('/user/{id}/answers', 'UserController@showProfileAnswers');
-
 
     Route::get('/admin', 'AdminController@index');
     Route::get('/admin/add_badge', 'AdminController@add_badge');
@@ -47,22 +51,48 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/remove_badge/{id}', 'AdminController@remove_badge');
     Route::get('/admin/add_course', 'AdminController@add_course_page');
     Route::get('/admin/add_major', 'AdminController@add_major_page');
+    Route::get('/admin/add_component_category', 'AdminController@add_component_category_page');
     Route::post('/admin/add_major', 'AdminController@add_major');
     Route::post('/admin/add_course', 'AdminController@add_course');
+    Route::post('/admin/add_component_category', 'AdminController@add_component_category');
     Route::get('/admin/delete_course/{id}', 'AdminController@delete_course');
     Route::get('/admin/delete_major/{id}', 'AdminController@delete_major');
+    Route::get('/admin/delete_component_category/{id}', 'AdminController@delete_component_category');
     Route::get('/admin/update_course/{id}', 'AdminController@update_course_page');
     Route::get('/admin/update_major/{id}', 'AdminController@update_major_page');
+    Route::get('/admin/update_component_category/{id}', 'AdminController@update_component_category_page');
     Route::post('/admin/update_course/{id}', 'AdminController@update_course');
     Route::post('/admin/update_major/{id}', 'AdminController@update_major');
+    Route::post('/admin/update_component_category/{id}', 'AdminController@update_component_category');
+    Route::get('/admin/delete_accept_component', 'AdminController@delete_accept_component_page');
+    Route::get('/admin/delete_component/{id}', 'AdminController@delete_component');
+    Route::get('/admin/accept_component/{id}', 'AdminController@accept_component');
+    Route::get('/admin/reject_component/{id}', 'AdminController@reject_component');
+    Route::get('/admin/add_store', 'AdminController@add_store_page');
+    Route::post('/admin/add_store', 'AdminController@add_store');
+    Route::get('/admin/delete_store/{id}', 'AdminController@delete_store');
+    Route::get('/admin/update_store/{id}', 'AdminController@update_store_page');
+    Route::post('/admin/update_store/{id}', 'AdminController@update_store');
     Route::get('/admin/feedbacks', 'AdminController@view_feedbacks');
     Route::get('/admin/reports', 'AdminController@view_reports');
     Route::get('/admin/mail/many', 'AdminController@manyMailView');
     Route::get('/admin/mail/one/{id}', 'AdminController@oneMailView');
     Route::get('/admin/users', 'AdminController@listUsers');
     Route::get('/admin/mail/log', 'AdminController@showMailLog');
-    Route::get('/admin/statistics','AdminController@statistics');
+    Route::get('/admin/statistics', 'AdminController@statistics');
+
+    Route::get('/admin/event_requests', 'AdminController@eventRequests'); //viewing event request
+    Route::get('/admin/request/{id}', 'AdminController@viewRequest'); //viewing event information
+    Route::get('/admin/accept/{id}', 'AdminController@acceptRequest'); //accepting an event
+    Route::get('/admin/reject/{id}', 'AdminController@rejectRequest'); //rejecting an event
     Route::post('/mail/{type}', 'AdminController@processMailToUsers');
+
+    /** Routes for admin approving/rejectin note upload and deletion **/
+    Route::get('admin/note_requests', 'AdminController@noteRequests');
+    Route::get('admin/approve_note/{id}', 'AdminController@approveNoteUpload');
+    Route::get('admin/delete_note/{id}', 'AdminController@deleteNote');
+    Route::get('admin/view_note/{id}', 'AdminController@viewNote');
+
 
 
     Route::get('/browse', 'AppController@browse');
@@ -92,7 +122,72 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/report_question', 'AjaxController@send_report_question');
     Route::get('/report_answer', 'AjaxController@send_report_answer');
     Route::get('/verify/{token}', 'AuthController@verify');
-    //
+
+    Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
+
+    Route::get('/add_component', 'AppController@add_component');
+    Route::post('/user/post_component', 'AppController@post_component');
+    
+    Route::get('/admin/delete_note/{id}','AdminController@deleteNoteAdmin');
+    Route::get('/browse/notes/{course_id}','AppController@list_notes');
+    Route::get('/browse/notes/view_note/{note_id}','AppController@view_note');
+
+
+    /**
+     * Create a new calender for the user
+     */
+    Route::post('calender/create', 'CalenderController@store');
+    /**
+     * Show a calender for a specific user
+     */
+    Route::get('calender/{calender_id}', 'CalenderController@show');
+    /**
+     * View the current authenticated user calender
+     */
+    Route::get('calender', 'CalenderController@viewCalender');
+    /**
+     * Add an event to the user's calender
+     */
+    Route::get('calender/add/{event_id}', 'CalenderController@addEvent');
+    /**
+     * Show all events
+     */
+    Route::get('events', 'EventController@index');
+    /**
+     * Show a specific event
+     */
+    Route::get('events/{id}', 'EventController@show');
+    /**
+     * Show the calender of a specific user
+     */
+    Route::get('user/{user_id}/calender', 'CalenderController@showUserCalender');
+    /**
+     * Request to delete a note
+     */
+    Route::post('/note/{note_id}/requestDelete', 'NotesController@request_delete');
+    /**
+     *  Post comment on a note
+     */
+    Route::post('/note_comment/{note_id}', 'NotesController@post_note_comment');
+    /**
+     *  Vote a note
+     */
+    Route::get('/vote/note/{note_id}/{type}', 'NotesController@vote_note');
+     /**
+     *  View specific note details
+     */
+    Route::get('/notes/view_note_details/{note_id}', 'NotesController@view_note_details');
+
+    /**
+     * A form to upload a note
+     */
+    Route::get('/course/{courseID}/uploadNote', 'NotesController@upload_notes_form');
+    /**
+     * Upload a note
+     */
+    Route::post('/course/{courseID}/uploadNote', 'NotesController@upload_notes');
+
+
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -169,8 +264,19 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
     /*
      * Home page data
      */
-    Route::get('/home','ApiController@home');
+    Route::get('/home', 'ApiController@home');
+    /*
+     * Get the available components
+     */
+    Route::get('/components', 'API\ComponentAPIController@view_components');
+    /*
+     *  Post a question about a component
+     */
+    Route::post('/component/ask/{component_id}', 'API\ComponentAPIController@component_ask');
+    /*
+     *  Search and sort stores
+     */
+    Route::get('/stores/searchandsort/{id}/{name}/{location}/{orderby}/{ordertype}', 'API\StoresAPIController@search_and_sort_stores');
+
 
 });
-
-

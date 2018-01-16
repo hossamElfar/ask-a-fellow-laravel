@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Store;
 use App\Http\Requests;
 use Auth;
 use App\Major;
@@ -33,6 +34,20 @@ class UserController extends Controller
             return 'Ooops! User doesn\'t exit';
         return view('user.answers', compact(['user']));
     }
+
+    public function view_storelist()
+    {
+        $stores = Store::all();
+        return view('user.stores', compact(['stores']));
+    }
+    
+    public function view_store_details($id)
+    {
+        $store = Store::find($id);
+        
+        return view('user.store_details', compact(['store']));
+    }
+
 
     public function updateInfoPage()
     {
