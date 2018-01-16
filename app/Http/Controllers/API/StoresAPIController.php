@@ -10,43 +10,29 @@ use App\Store;
 
 class StoresAPIController extends Controller
 {
-    // search by id
-    public function search_by_id($id){
-        $Stores = Store::find($id);
-        error_log($Stores);
-        return response()->json($Stores);
-    }
-
-    // search by name
-    public function search_by_name($name){
-        $Stores = Store::where('name', $name)->first();
-        return response()->json($Stores);
-    }
-
-    // search by location
-    public function search_by_location($location){
-        $Stores = Store::where('location', $location)->first();
-        return response()->json($Stores);
-    }
-
-    // sort by rating
-    public function sort_by_rating($rate){
-        $Stores = Store::paginate(10);
-        error_log($Stores);
-
-        if(!$Stores){
-
-        	$returnData['status'] = false;
-            $returnData['message'] = 'There are no components';
-
-        } else{
-
-        	$returnData['status'] = true;
+    // Search and sort with all attributes. Empty attributes are set '_'. Default order is by rate descendingly
+    public function search_and_sort_stores($id, $name, $location, $orderby, $ordertype){
+        if ($id != '_'){
+            $Stores = Store::find($id);
+        }else{
+            if ($name == '_')
+                $name = null;
+            if ($location == '_')
+                $location = null;
+            if ($orderby == '_')
+                $orderby = 'rate';
+            if ($ordertype == '_')
+                $ordertype = 'desc';
+            $Stores = Store::where('name', 'LIKE', '%'.$name.'%')->where('location', 'LIKE', '%'.$location.'%')->orderBy($orderby, $ordertype)->paginate(10);
             $Stores->setPath('api/v1/');
-            $returnData['data'] = $Stores;
-
         }
-
+        if(!$Stores){
+        	$returnData['status'] = false;
+            $returnData['message'] = 'There are no stores';
+        } else{
+        	$returnData['status'] = true;
+            $returnData['data'] = $Stores;
+        }
         return response()->json($returnData);
     }
 }

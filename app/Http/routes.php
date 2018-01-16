@@ -33,15 +33,13 @@ Route::group(['middleware' => ['web']], function () {
     /*
      * Get the available components
      */
-    Route::post('/api/stores/{name}', 'API\StoresAPIController@sort_by_rating');
-
 
     Route::get('/about', 'StaticController@about');
     Route::get('/howitworks', 'StaticController@howitworks');
 
     Route::get('/user/update', 'UserController@updateInfoPage');
     Route::post('/user/update', 'UserController@updateInfo');
-     Route::get('/user/stores', 'UserController@view_storelist');
+    Route::get('/user/stores', 'UserController@view_storelist');
     Route::get('/user/stores/{{ $store->id }}', 'UserController@view_storedetails');
     Route::get('/user/{id}', 'UserController@show');
     Route::get('/user/{id}/questions', 'UserController@show');
@@ -275,5 +273,10 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['cors']], function () {
      *  Post a question about a component
      */
     Route::post('/component/ask/{component_id}', 'API\ComponentAPIController@component_ask');
+    /*
+     *  Search and sort stores
+     */
+    Route::get('/stores/searchandsort/{id}/{name}/{location}/{orderby}/{ordertype}', 'API\StoresAPIController@search_and_sort_stores');
+
 
 });
